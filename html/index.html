@@ -12,8 +12,35 @@
 
 </head>
 <body>
-  
 
-  <script src="../js/script.js"></script>
+  <form id="newTaskForm">
+    <label for="inputTitle">Title:</label>
+    <input type="text" name="inputTitle" value="New Task">
+
+    <label for="inputDescription">Description:</label>
+    <input type="text" name="inputDescription">
+
+    <label for="inputSubtasks">Subtasks:</label>
+    <input type="text" name="inputSubtasks">
+
+    <label for="inputDueDate">Due Date:</label>
+    <input type="datetime-local" name="inputDueDate"  value="2017-06-01T08:30">
+
+    <label for="inputImportance">Importance:</label>
+    <input type="range" name="inputImportance" min="0" max="100" step="1" value="50">
+
+    <label for="inputDuration">Duration:</label>
+    <input type="number" name="inputDuration" value="15">
+
+    <label for="inputCompletion">Completion:</label>
+    <input type="range" name="inputCompletion" min="0" max="100" step="1" value="0">
+
+    <button type="submit">Add Task +</button>
+  </form>
+
+  <ul id="taskList">
+  </ul>
+
+<script src="../js/script.js"></script>
 </body>
 </html>
