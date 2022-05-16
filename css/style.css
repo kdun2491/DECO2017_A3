@@ -1,3 +1,24 @@
-ul {
-  padding: 10px;
+.sidebar {
+  background-color: #5242B5;
+}
+
+.main {
+  background-color: #FFFFFF;
+  overflow: hidden;
+}
+
+#toggle {
+  background-color: #00000033;
+  overflow: hidden;
+}
+
+.aside {
+  background-color: #F6F6F6;
+  overflow: hidden;
+}
+
+div {
+  border: 1px;
+  border-style: solid;
+  border-color: red;
 }

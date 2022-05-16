@@ -8,39 +8,124 @@
   <meta name="description" content="" />
 
   <link href="../css/reset.css" rel="stylesheet" type="text/css" />
+  <link href="../css/layout.css" rel="stylesheet" type="text/css" />
   <link href="../css/style.css" rel="stylesheet" type="text/css" />
 
 </head>
 <body>
 
-  <form id="newTaskForm">
-    <label for="inputTitle">Title:</label>
-    <input type="text" name="inputTitle" value="New Task">
+  <div id="container" class="container">
 
-    <label for="inputDescription">Description:</label>
-    <input type="text" name="inputDescription">
+<!-- SIDEBAR -->
+    <div class="sidebar">
+      <ul>
+        <a href="#" onclick="return show('showTaskList');"><li>Task List</li></a>
+        <a href="#" onclick="return show('showTaskBlock');"><li>Task Block</li></a>
+        <a href="#" onclick="return show('showDictionary');"><li>Dictionary</li></a>
+        <a href="#" onclick="return show('showTimer');"><li>Timer</li></a>
+        <a href="#" onclick="return show('showMusic');"><li>Music</li></a>
+      </ul>
+    </div>
 
-    <label for="inputSubtasks">Subtasks:</label>
-    <input type="text" name="inputSubtasks">
+<!-- TOGGLE -->
+    <div ID="toggle">
+      Toggle
+    </div>
 
-    <label for="inputDueDate">Due Date:</label>
-    <input type="datetime-local" name="inputDueDate"  value="2017-06-01T08:30">
+<!-- MUSIC MAIN CONTENT -->
+    <div class="main hideable showMusic">
+      <div class="innerContainer">
+        Music Main Content
+      </div>
+    </div>
 
-    <label for="inputImportance">Importance:</label>
-    <input type="range" name="inputImportance" min="0" max="100" step="1" value="50">
+<!-- TIMER MAIN CONTENT -->
+    <div class="main hideable showTimer">
+      <div class="innerContainer">
+        Timer Main Content
+      </div>
+    </div>
 
-    <label for="inputDuration">Duration:</label>
-    <input type="number" name="inputDuration" value="15">
+<!-- TIMER ASIDE -->
+    <div class="aside hideable showTimer">
+      <div class="innerContainer">
+        Timer Aside
+      </div>
+    </div>
 
-    <label for="inputCompletion">Completion:</label>
-    <input type="range" name="inputCompletion" min="0" max="100" step="1" value="0">
+<!-- DICTIONARY MAIN CONTENT -->
+    <div class="main hideable showDictionary">
+      <div class="innerContainer">
+        Dictionary Main Content
+      </div>
+    </div>
 
-    <button type="submit">Add Task +</button>
-  </form>
+<!-- DICTIONARY ASIDE -->
+    <div class="aside hideable showDictionary">
+      <div class="innerContainer">
+        Dictionary Aside
+      </div>
+    </div>
 
-  <ul id="taskList">
-  </ul>
+<!-- TASKBLOCK MAIN CONTENT -->
+    <div class="main hideable showTaskBlock">
+      <div class="innerContainer">
+        Task Block Main Content
+      </div>
+    </div>
 
-<script src="../js/script.js"></script>
+<!-- TASKBLOCK ASIDE -->
+    <div class="aside hideable showTaskBlock">
+      <div class="innerContainer">
+        Task Block Aside
+      </div>
+    </div>
+
+<!-- TASKLIST MAIN CONTENT -->
+    <div class="main hideable showTaskList">
+      <div class="innerContainer">
+
+        <form id="newTaskForm">
+          <label for="inputTitle">Title:</label>
+          <input type="text" name="inputTitle" value="New Task">
+
+          <label for="inputDescription">Description:</label>
+          <input type="text" name="inputDescription">
+
+          <label for="inputSubtasks">Subtasks:</label>
+          <input type="text" name="inputSubtasks">
+
+          <label for="inputDueDate">Due Date:</label>
+          <input type="datetime-local" name="inputDueDate"  value="2017-06-01T08:30">
+
+          <label for="inputImportance">Importance:</label>
+          <input type="range" name="inputImportance" min="0" max="100" step="1" value="50">
+
+          <label for="inputDuration">Duration:</label>
+          <input type="number" name="inputDuration" value="15">
+
+          <label for="inputCompletion">Completion:</label>
+          <input type="range" name="inputCompletion" min="0" max="100" step="1" value="0">
+
+          <button type="submit">Add Task +</button>
+        </form>
+
+        <ul id="taskList">
+        </ul>
+      </div>
+    </div>
+
+<!-- TASKLIST ASIDE -->
+    <div class="aside hideable showTaskList">
+      <div class="innerContainer">
+        Task List Aside
+      </div>
+    </div>
+
+</div>
+
+
+  <script src="../js/navigation.js"></script>
+  <script src="../js/tasks.js"></script>
 </body>
 </html>
