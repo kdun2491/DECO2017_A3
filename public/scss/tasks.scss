@@ -1,0 +1,264 @@
+#taskList {
+  clear: both;
+  margin-top: 50px;
+
+  li
+  {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+
+    border-bottom: 1px solid #CCCCCC;
+
+    &:last-child
+    {
+      border-bottom: 0px;
+    }
+
+    &:hover
+    {
+      cursor: pointer;
+
+      div.title
+      {
+        border-radius: 10px;
+        background-color: #D6D6D666;
+      }
+    }
+
+    &.highlighted
+    {
+      cursor:default;
+
+      div.title
+      {
+        border-radius: 10px;
+        background-color: #D6D6D633;
+      }
+    }
+
+    div.split
+    {
+      margin-bottom: 15px;
+      overflow-wrap: anywhere;
+    }
+
+    div.span
+    {
+      overflow-wrap: anywhere;
+      flex-basis: 100%;
+
+      margin-bottom: 20px;
+    }
+
+    div.title {
+      position:relative;
+      font-size: large;
+      font-weight: bold;
+      font-style: normal;
+      padding: 5px 8px;
+      left: -8px;
+      top: -5px;
+      margin-bottom: 10px;
+      overflow-wrap: anywhere;
+      max-width:200px;
+    }
+    div.rating {
+      font-size: x-large;
+      font-weight: bold;
+      font-style: normal;
+      text-align:right;
+
+      &.low{
+        color: #75D000;
+      }
+
+      &.medium{
+        color: #FFB800;
+      }
+
+      &.high{
+        color: #FF0000;
+      }
+    }
+    div.description {
+      font-size: medium;
+      font-weight: normal;
+      font-style: normal;
+      overflow:hidden;
+      text-overflow: ellipsis;
+      -webkit-line-clamp: 3;
+      line-clamp: 3;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+
+
+      &.hidden {
+        margin: 0px;
+      }
+    }
+    div.remaining {
+      font-size: medium;
+      font-weight: bold;
+      font-style: italic;
+    }
+    div.date {
+      font-size: medium;
+      font-weight: bold;
+      font-style: normal;
+    }
+
+  }
+}
+
+.aside
+{
+  h1
+  {
+    display: inline-block;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: xx-large;
+    font-weight: bold;
+    font-style: italic;
+    overflow-wrap: anywhere;
+    min-height: 75px;
+  }
+
+  h2
+  {
+    display: inline-block;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: large;
+    font-weight: bold;
+    font-style: normal;
+  }
+
+  .section
+  {
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 20px 0px;
+    }
+
+    &.title {
+      display:flex;
+      flex-wrap:nowrap;
+      justify-content: space-between;
+    }
+  }
+
+  .module
+  {
+    min-height:40px;
+    border-radius: 20px;
+    background-color: #FFFFFF;
+    margin: 0px -25px;
+  }
+
+  #highlightCheckmark {
+    min-width: 75px;
+    height:75px;
+    margin-left:20px;
+    background-color: #C4C4C433;
+    border-radius: 20px;
+    color: #C4C4C4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+    font-weight: bold;
+    font-style: normal;
+    cursor:pointer;
+    margin-top: -20px;
+
+    &:hover{
+      background-color: #D6D6D633;
+      color: #D6D6D6;
+    }
+  }
+
+  #highlightSubtasks
+  {
+    padding: 0px 10px;
+
+    li
+    {
+      position: relative;
+      padding: 10px;
+      padding-left: 50px;
+
+      cursor:pointer;
+
+      &:hover
+      {
+        background-color: #C4C4C411;
+        border-radius: 100px;
+      }
+
+      span
+      {
+        margin-left: 20px;
+
+        &.uncomplete
+        {
+          color: #DDDDDD;
+        }
+      }
+
+      div
+      {
+        position: absolute;
+        top: 50%;
+        margin-top: -5px;
+        left: 15px;
+
+        border-radius: 6px;
+        background-color: #DDDDDD;
+
+        &.dot
+        {
+          width: 12px;
+          height:12px;
+        }
+        &.line
+        {
+          margin-left:4px;
+          margin-top:-2px;
+          width: 4px;
+          height:36px;
+        }
+      }
+
+      &:last-child div.line
+      {
+        display:none;
+      }
+    }
+  }
+
+}
+
+#addTask {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-left: 10px;
+  cursor: pointer;
+
+  border-radius: 100px;
+  background-color: #C4C4C4;
+
+  line-height: 90%;
+  text-align: center;
+  color: #FFFFFF;
+  font-size: xx-large;
+  font-weight: bold;
+  font-style: normal;
+
+  &:hover {
+    background-color: #D6D6D6;
+  }
+}

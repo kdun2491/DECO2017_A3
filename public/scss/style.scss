@@ -1,0 +1,67 @@
+h1 {
+  display: inline-block;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: xx-large;
+  font-weight: bold;
+  font-style: italic;
+}
+
+div {
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+.main {
+  background-color: #FFFFFF;
+  padding: 50px;
+}
+
+.container { background-color: red;}
+
+.aside {
+  background-color: #F6F6F6;
+  padding: 50px;
+}
+
+#toggle {
+  position: relative;
+  overflow:visible;
+  background-color: #F6F6F6;
+}
+
+#toggle div {
+  position:absolute;
+  width:32px;
+  height:100%;
+  right:0px;
+  z-index:0.5;
+  display: flex;
+
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+
+  background-color: #00000033;
+  cursor: pointer;
+  color: #FFFFFF;
+  font-size: small;
+  text-align: center;
+}
+
+#toggle .fade
+{
+  background-color: #FFFFFF99;
+}
+
+#floating {
+    background-color: #00000033;
+    overflow: auto;
+
+    form {
+      margin: 25px;
+      padding: 75px;
+      max-width: 450px;
+
+      border-radius: 40px;
+      background-color: #FFFFFF;
+    }
+}

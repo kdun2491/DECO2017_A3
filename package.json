@@ -1,0 +1,37 @@
+{
+  "name": "studbud",
+  "version": "1.0.0",
+  "description": "DECO2017 Assessment 3 Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js",
+    "prestart": "parcel build ./public/html/index.html",
+    "dev": "parcel serve ./public/html/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kdun2491/DECO2017_A3.git"
+  },
+  "keywords": [
+    "studbud",
+    "deco2017",
+    "usyd"
+  ],
+  "author": "KDUN2491",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kdun2491/DECO2017_A3/issues"
+  },
+  "homepage": "https://github.com/kdun2491/DECO2017_A3#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "sass": "^1.52.1"
+  },
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "autoprefixer": "^10.4.7",
+    "parcel": "^2.0.0-rc.0",
+    "postcss": "^8.4.14"
+  }
+}

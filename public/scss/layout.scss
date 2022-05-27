@@ -1,0 +1,147 @@
+/* Reset parent heights */
+html, body {
+  height: 100%;
+  width: 100%;
+}
+
+/* Layout Grid wide view  */
+.container {
+  display: grid;
+  grid-template-columns: 64px 1fr 450px;
+  grid-template-rows: 100%;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "sidebar main aside";
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#toggle {
+  display: none;
+}
+
+/* Layout Grid medium-wide view  */
+@media screen and (max-width: 964px) {
+  .container {  display: grid;
+    grid-template-columns: 64px 1fr 1fr;
+    grid-template-rows: 100%;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "sidebar main aside";
+    height: 100%;
+  }
+
+  #toggle {
+    display: none;
+  }
+ }
+
+
+ /* Layout Grid medium view  */
+
+ /*
+ @media screen and (max-width: 728px) {
+   .container {
+     display: grid;
+     grid-template-columns: 64px auto 1px auto;
+     grid-template-rows: 100%;
+     grid-auto-flow: row;
+     grid-template-areas:
+       "sidebar main toggle aside";
+     height: 100%;
+   }
+
+    .container .aside
+    {
+      width:64px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .container.activeAside .aside
+    {
+      width: 450px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    #toggle {
+      display: block;
+    }
+  }
+
+  */
+
+  /* Layout Grid narrow view  600 */
+ @media screen and (max-width: 760px) {
+   .container {
+     display: grid;
+     grid-template-columns: 1fr;
+     grid-template-rows: min-content min-content;
+     grid-auto-flow: row;
+     grid-template-areas:
+       "main"
+       "aside";
+     min-height: 100%;
+     background-color:#FFFFFF;
+   }
+
+   .sidebar {
+     height: 64px;
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+   }
+
+   #toggle {
+     display: none;
+   }
+   .container{
+     overflow:auto;
+   }
+  }
+
+  /* Layout Grid assignments  */
+.sidebar { grid-area: sidebar; }
+
+.aside { grid-area: aside; }
+
+#toggle { grid-area: toggle; }
+
+.main { grid-area: main; }
+
+/* Container grid base visibility settings  */
+.taskBlockShow, .dictionaryShow, .timerShow, .musicShow { display: none; }
+
+
+
+.main, .aside {
+  overflow:hidden;
+  overflow-y:scroll;
+}
+
+.container, .main, .aside {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.container::-webkit-scrollbar, .main::-webkit-scrollbar, .aside::-webkit-scrollbar {
+  display: none;
+}
+
+#floating
+{
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.hidden {
+    display: none;
+  }
+}

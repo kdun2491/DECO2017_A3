@@ -1,0 +1,114 @@
+/* Reset parent heights */
+html, body {
+  height: 100%;
+}
+
+/* Layout Grid wide view  */
+.container {
+  display: grid;
+  grid-template-columns: 64px 1fr 450px;
+  grid-template-rows: 100%;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "sidebar main aside";
+  height: 100%;
+}
+
+#toggle {
+  display: none;
+}
+
+/* Layout Grid medium-wide view  */
+@media screen and (max-width: 964px) {
+  .container {  display: grid;
+    grid-template-columns: 64px 1fr 1fr;
+    grid-template-rows: 100%;
+    grid-auto-flow: row;
+    grid-template-areas:
+      "sidebar main aside";
+    height: 100%;
+  }
+
+  #toggle {
+    display: none;
+  }
+ }
+
+ /* Layout Grid medium view  */
+ @media screen and (max-width: 728px) {
+   .container {
+     display: grid;
+     grid-template-columns: 64px auto 32px auto;
+     grid-template-rows: 100%;
+     grid-auto-flow: row;
+     grid-template-areas:
+       "sidebar main toggle aside";
+     height: 100%;
+   }
+
+   .container .aside
+   {
+     width: 64px;
+     transition: all 0.2s ease-in-out;
+   }
+
+    .container.activeAside .aside
+    {
+      width: 450px;
+      transition: all 0.2s ease-in-out;
+    }
+
+    #toggle {
+      display: block;
+    }
+  }
+
+  /* Layout Grid narrow view  */
+ @media screen and (max-width: 600px) {
+   .container {
+     display: grid;
+     grid-template-columns: 1fr;
+     grid-template-rows: min-content min-content;
+     grid-auto-flow: row;
+     grid-template-areas:
+       "main"
+       "aside";
+     min-height: 100%;
+   }
+
+   .aside {
+     min-width: 100%;
+   }
+
+   .sidebar {
+     height: 64px;
+     position: fixed;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+   }
+
+   #toggle {
+     display: none;
+   }
+  }
+
+  /* Layout Grid assignments  */
+.sidebar { grid-area: sidebar; }
+
+.aside { grid-area: aside; }
+
+#toggle { grid-area: toggle; }
+
+.main { grid-area: main; }
+
+/* Container grid base visibility settings  */
+.taskBlockShow, .dictionaryShow, .timerShow, .musicShow { display: none; }
+
+.innerContainer
+{
+  min-width: 450px;
+  height: 100%;
+}
+
+/*# sourceMappingURL=index.068b41e0.css.map */

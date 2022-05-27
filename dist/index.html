@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>kdun2491 - DECO3100 - A3</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
+  <link href="/index.b2a7a68e.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+  <div id="container" class="container">
+
+<!-- SIDEBAR -->
+    <div class="sidebar">
+      <ul>
+        <li onclick="return show('taskList');">Task List</li>
+        <li onclick="return show('taskBlock');">Task Block</li>
+        <li onclick="return show('dictionary');">Dictionary</li>
+        <li onclick="return show('timer');">Timer</li>
+        <li onclick="return show('music');">Music</li>
+      </ul>
+    </div>
+
+
+<!-- MUSIC MAIN CONTENT -->
+    <div id="musicMain" class="main hideable musicShow">
+      <div class="innerContainer">
+        Music Main Content
+      </div>
+    </div>
+
+<!-- TIMER MAIN CONTENT -->
+    <div id="timerMain" class="main hideable timerShow">
+      <div class="innerContainer">
+        Timer Main Content
+      </div>
+    </div>
+
+<!-- TIMER ASIDE -->
+    <div id="timerAside" class="aside hideable timerShow">
+      <div class="innerContainer">
+        Timer Aside
+      </div>
+    </div>
+
+<!-- DICTIONARY MAIN CONTENT -->
+    <div id="dictionaryMain" class="main hideable dictionaryShow">
+      <div class="innerContainer">
+        Dictionary Main Content
+      </div>
+    </div>
+
+<!-- DICTIONARY ASIDE -->
+    <div id="dictionaryAside" class="aside hideable dictionaryShow">
+      <div class="innerContainer">
+        Dictionary Aside
+      </div>
+    </div>
+
+<!-- TASKBLOCK MAIN CONTENT -->
+    <div id="taskBlockMain" class="main hideable taskBlockShow">
+      <div class="innerContainer">
+        Task Block Main Content
+      </div>
+    </div>
+
+<!-- TASKBLOCK ASIDE -->
+    <div id="taskBlockAside" class="aside hideable taskBlockShow">
+      <div class="innerContainer">
+        Task Block Aside
+      </div>
+    </div>
+
+<!-- TASKLIST MAIN CONTENT -->
+    <div id="taskListMain" class="main hideable taskListShow">
+      <div class="innerContainer">
+        <h1>Tasks</h1>
+        <div id="addTask">+</div>
+
+        <div class="emptyTasks">You have no tasks.</div>
+        <ul id="taskList">
+        </ul>
+      </div>
+    </div>
+
+<!-- TASKLIST ASIDE -->
+    <div id="taskListAside" class="aside hideable taskListShow">
+      <div class="innerContainer">
+        <div class="section title">
+          <h1 id="highlightTitle">Task Title</h1>
+          <div id="highlightCheckmark">✔</div>
+        </div>
+        <div class="section">
+          <p id="highlightDescription">Task Description</p>
+        </div>
+        <div class="section">
+          <h2>Subtasks</h2>
+          <ul id="highlightSubtasks">
+          </ul>
+        </div>
+        <div class="section">
+          <h2>Importance</h2>
+          <div id="highlightImportance" class="module"></div>
+        </div>
+        <div class="section">
+          <h2>Due Date</h2>
+          <div id="highlightDueDate" class="module"></div>
+        </div>
+        <div class="section">
+          <h2>Duration</h2>
+          <div id="highlightDuration" class="module"></div>
+        </div>
+      </div>
+    </div>
+
+<!-- TOGGLE -->
+    <div id="toggle">
+      <div class="fade"></div>
+      <div>◀</div>
+    </div>
+
+</div>
+
+<div id="floating" class="hidden">
+  <form id="newTaskForm">
+    <label for="inputTitle">Title:</label>
+    <input type="text" name="inputTitle" value="New Task">
+
+    <label for="inputDescription">Description:</label>
+    <input type="text" name="inputDescription">
+
+    <label for="inputSubtasks">Subtasks:</label>
+    <input type="text" name="inputSubtasks">
+
+    <label for="inputDueDate">Due Date:</label>
+    <input type="datetime-local" name="inputDueDate" value="2017-06-01T08:30">
+
+    <label for="inputImportance">Importance:</label>
+    <input type="range" name="inputImportance" min="0" max="100" step="1" value="50">
+
+    <label for="inputDuration">Duration:</label>
+    <input type="number" name="inputDuration" value="15">
+
+    <label for="inputCompletion">Completion:</label>
+    <input type="range" name="inputCompletion" min="0" max="100" step="1" value="0">
+
+    <button type="submit">Add Task +</button>
+    <button type="reset">Clear Tasks</button>
+  </form>
+</div>
+
+<script src="/index.b02335d1.js"></script>
+<script src="/index.5f26047d.js"></script>
+</body>
+</html>
