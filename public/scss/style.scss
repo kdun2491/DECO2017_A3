@@ -6,8 +6,9 @@ h1 {
   font-style: italic;
 }
 
-div {
+div, form, input {
   font-family: "Inter", Arial, Helvetica, sans-serif;
+  color: #000000E6;
 }
 
 .main {
@@ -52,16 +53,149 @@ div {
   background-color: #FFFFFF99;
 }
 
-#floating {
-    background-color: #00000033;
-    overflow: auto;
+#floating
+{
+  background-color: #00000033;
+  overflow: hidden;
 
-    form {
-      margin: 25px;
-      padding: 75px;
-      max-width: 450px;
+  form
+  {
+    box-sizing: border-box;
 
-      border-radius: 40px;
-      background-color: #FFFFFF;
+    padding: 35px 50px;
+    max-width: 600px;
+    max-height: 90%;
+    margin: 50px;
+    border-radius: 40px;
+
+    background-color: #FFFFFF;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    justify-content: space-between;
+
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+
+    &::-webkit-scrollbar {
+      display: none;
     }
+  }
+
+  div
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width:100%;
+    margin-bottom: 20px;
+
+    &#inputDueDate
+    {
+      width: 55%;
+
+      &.wrong
+      {
+        color: red;
+        input{
+        border-color: red;
+      }
+      }
+    }
+
+    &#inputDuration
+    {
+      max-width: 40%;
+
+      div
+      {
+        display: inline-block;
+        position: relative;
+        width: 100%;
+        margin:0px;
+
+        input
+        {
+
+          width: 100%;
+          box-sizing: border-box;
+        }
+
+        span
+        {
+          position: absolute;
+          left: 0px;
+          top: 14px;
+          padding-left: 5px;
+        }
+      }
+    }
+
+    &#inputImportance, &#inputCompletion
+    {
+      flex-direction:row;
+      flex-wrap: wrap;
+
+      span
+      {
+        margin-left: 50px;
+        font-size: xx-large;
+        font-weight: bold;
+
+        &.low{
+          color: #75D000;
+        }
+
+        &.medium{
+          color: #FFB800;
+        }
+
+        &.high{
+          color: #FF0000;
+        }
+      }
+    }
+  }
+
+  label
+  {
+    font-size: large;
+    font-weight: bold;
+    margin: 5px 15px;
+  }
+
+  input
+  {
+    font-size: medium;
+    padding: 10px 15px;
+    border-radius: 100px;
+    border: 2px solid #C4C4C4;
+
+    &[type=range]
+    {
+      width:100%;
+      padding: 0px;
+    }
+  }
+
+  button
+  {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 0px solid red;
+    background-color: #5242B5;
+    cursor:pointer;
+    font-size: large;
+    font-style: normal;
+    color: #ffffff;
+
+    &:hover
+    {
+      background-color: #7164C2;
+      font-style: italic;
+    }
+  }
 }

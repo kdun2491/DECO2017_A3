@@ -8,7 +8,7 @@
   <meta name="description" content="">
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter">
-  <link href="/index.b2a7a68e.css" rel="stylesheet" type="text/css">
+  <link href="/index.c74267d1.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 
@@ -71,50 +71,83 @@
 <!-- TASKBLOCK ASIDE -->
     <div id="taskBlockAside" class="aside hideable taskBlockShow">
       <div class="innerContainer">
-        Task Block Aside
+        <div class="section title">
+          <h1 id="highlightBlockTitle">Task Title</h1>
+          <div id="highlightBlockCheckmark">✔</div>
+        </div>
+        <div class="section">
+          <p id="highlightBlockDescription">Task Description</p>
+        </div>
+        <div class="section">
+          <h2>Subtasks</h2>
+          <ul id="highlightBlockSubtasks">
+          </ul>
+        </div>
+        <div class="section">
+          <h2>Importance</h2>
+          <div id="highlightBlockImportance" class="module"></div>
+        </div>
+        <div class="section">
+          <h2>Due Date</h2>
+          <div id="highlightBlockDueDate" class="module"></div>
+        </div>
+        <div class="section">
+          <h2>Duration</h2>
+          <div id="highlightBlockDuration" class="module"></div>
+        </div>
+        <div class="buttonContainer">
+          <button id="highLightBlockEdit" type="button">Edit Task</button>
+          <button id="highLightBlockDelete" type="button">Delete Task</button>
+        </div>
       </div>
+      <div class="addTasks"><p>+</p></div>
     </div>
 
 <!-- TASKLIST MAIN CONTENT -->
     <div id="taskListMain" class="main hideable taskListShow">
       <div class="innerContainer">
         <h1>Tasks</h1>
-        <div id="addTask">+</div>
+        <div class="addTasks">+</div>
 
-        <div class="emptyTasks">You have no tasks.</div>
         <ul id="taskList">
         </ul>
       </div>
+      <div class="emptyTasks"><p style="font-size: 100px">🤷</p><p>No more tasks to do. Well done!</p></div>
     </div>
 
 <!-- TASKLIST ASIDE -->
     <div id="taskListAside" class="aside hideable taskListShow">
       <div class="innerContainer">
         <div class="section title">
-          <h1 id="highlightTitle">Task Title</h1>
-          <div id="highlightCheckmark">✔</div>
+          <h1 id="highlightListTitle">Task Title</h1>
+          <div id="highlightListCheckmark">✔</div>
         </div>
         <div class="section">
-          <p id="highlightDescription">Task Description</p>
+          <p id="highlightListDescription">Task Description</p>
         </div>
         <div class="section">
           <h2>Subtasks</h2>
-          <ul id="highlightSubtasks">
+          <ul id="highlightListSubtasks">
           </ul>
         </div>
         <div class="section">
           <h2>Importance</h2>
-          <div id="highlightImportance" class="module"></div>
+          <div id="highlightListImportance" class="module"></div>
         </div>
         <div class="section">
           <h2>Due Date</h2>
-          <div id="highlightDueDate" class="module"></div>
+          <div id="highlightListDueDate" class="module"></div>
         </div>
         <div class="section">
           <h2>Duration</h2>
-          <div id="highlightDuration" class="module"></div>
+          <div id="highlightListDuration" class="module"></div>
+        </div>
+        <div class="buttonContainer">
+          <button id="highLightListEdit" type="button">Edit Task</button>
+          <button id="highLightListDelete" type="button">Delete Task</button>
         </div>
       </div>
+      <div class="addTasks"><p>+</p></div>
     </div>
 
 <!-- TOGGLE -->
@@ -127,33 +160,53 @@
 
 <div id="floating" class="hidden">
   <form id="newTaskForm">
+    <div id="inputTitle">
     <label for="inputTitle">Title:</label>
-    <input type="text" name="inputTitle" value="New Task">
+    <input id="inputTitleValue" type="text" name="inputTitle" placeholder="Add a name for your task here!">
+    </div>
 
+    <div id="inputDescription">
     <label for="inputDescription">Description:</label>
-    <input type="text" name="inputDescription">
+    <input id="inputDescriptionValue" type="text" name="inputDescription" placeholder="Describe your task here, if you need to...">
+    </div>
 
+    <div id="inputSubtasks">
     <label for="inputSubtasks">Subtasks:</label>
-    <input type="text" name="inputSubtasks">
+    <input id="inputSubtasksValue" type="text" name="inputSubtasks" placeholder="Comma, separate, your, subtasks">
+    </div>
 
+    <div id="inputDueDate">
     <label for="inputDueDate">Due Date:</label>
-    <input type="datetime-local" name="inputDueDate" value="2017-06-01T08:30">
+    <input id="inputDueDateValue" type="datetime-local" name="inputDueDate" value="" onchange="redDate()">
+    </div>
 
-    <label for="inputImportance">Importance:</label>
-    <input type="range" name="inputImportance" min="0" max="100" step="1" value="50">
-
+    <div id="inputDuration">
     <label for="inputDuration">Duration:</label>
-    <input type="number" name="inputDuration" value="15">
+    <div>
+      <input id="inputDurationValue" type="number" name="inputDuration" value="100">
+      <span id="inputDurationSuffix">mins</span>
+    </div>
+    </div>
 
+    <div id="inputImportance">
+    <label for="inputImportance">Importance:</label>
+    <span id="importanceIndicator">!!!</span>
+    <input id="inputImportanceValue" type="range" name="inputImportance" min="0" max="100" step="1" value="100" oninput="formImportance(this.value)" onchange="formImportance(this.value)">
+    </div>
+
+    <div id="inputCompletion">
     <label for="inputCompletion">Completion:</label>
-    <input type="range" name="inputCompletion" min="0" max="100" step="1" value="0">
-
-    <button type="submit">Add Task +</button>
-    <button type="reset">Clear Tasks</button>
+    <span id="completionIndicator">100%</span>
+    <input id="inputCompletionValue" type="range" name="inputCompletion" min="0" max="100" step="1" value="100" oninput="formCompletion(this.value)" onchange="formCompletion(this.value)">
+    </div>
+    <div style="width: 10px"></div>
+    <button id="modifyTaskButton" type="button">Edit Task</button>
+    <button id="addTaskButton" type="button">Add Task +</button>
   </form>
 </div>
 
-<script src="/index.b02335d1.js"></script>
-<script src="/index.5f26047d.js"></script>
+<script src="/index.dbb0b877.js"></script>
+<script src="/index.c064d8bc.js"></script>
+<script src="/index.174bc0f7.js"></script>
 </body>
 </html>

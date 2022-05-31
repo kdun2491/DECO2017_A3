@@ -1,6 +1,6 @@
 // Task object
 class Task {
-  constructor(id, title, description, subtasks, dueDate, importance, duration, completion)
+  constructor(id, title, description, subtasks, dueDate, importance, duration, completion, done)
   {
     this.id = id; // Task ID;
     this.title = title; // Task Title (string)
@@ -10,16 +10,66 @@ class Task {
     this.importance = importance; // Task Importance (number percentage of 100)
     this.duration = duration; // Task Duration (number of minutes to fully complete task)
     this.completion = completion; // Task Completion (number percentage of full task completion)
+    this.done = done; // Crossed off
   }
 }
 
 // Empty array to add new tasks to
 var taskList = new Array();
 
+
+// Range indicators on floating form
+var importanceIndicator = document.getElementById('importanceIndicator');
+var completionIndicator = document.getElementById('completionIndicator');
+
+function formImportance(value) {
+      switch(Math.floor(value / 100 * 4))
+      {
+        case 0:
+          importanceIndicator.textContent = "!";
+          importanceIndicator.style.color = "#FFFFFF00";
+          break;
+        case 1:
+          importanceIndicator.textContent = "!";
+          importanceIndicator.style.color = "#75D000";
+          break;
+        case 2:
+          importanceIndicator.textContent = "!!";
+          importanceIndicator.style.color = "#FFB800";
+          break;
+        case 3:
+          importanceIndicator.textContent = "!!!";
+          importanceIndicator.style.color = "#FF0000";
+          break;
+        case 4:
+          importanceIndicator.textContent = "!!!";
+          importanceIndicator.style.color = "#FF0000";
+          break;
+      }
+}
+
+function formCompletion(value) {
+  completionIndicator.textContent = Math.round(value) + "%"
+}
+
+formImportance(document.getElementById('inputImportanceValue').value);
+formCompletion(document.getElementById('inputCompletionValue').value);
+
 // Form event that adds a new task to the task list, upon clicking the submit button
 var form = document.getElementById("newTaskForm");
-form.addEventListener("submit", function(event) {
-  event.preventDefault();
+var add = document.getElementById("addTaskButton");
+add.addEventListener("click", function(event){
+  fillForm(0);
+});
+
+// Form event that edits a task in the task list, upon clicking the button
+var modify = document.getElementById("modifyTaskButton");
+modify.addEventListener("click", function(){
+  fillForm(modify.dataset.id);
+});
+
+function fillForm(modifiedTaskId)
+  {
   let title = form.elements.inputTitle.value;
   let description = form.elements.inputDescription.value;
   let subtasks = form.elements.inputSubtasks.value;
@@ -28,23 +78,63 @@ form.addEventListener("submit", function(event) {
   let duration = form.elements.inputDuration.value;
   let completion = form.elements.inputCompletion.value;
 
-  addTask(title, description, subtasks, dueDate, importance, duration, completion);
+  if (title.trim().length === 0)
+    title = "Untitled";
+  else
+    title = title.trim();
+
+  if (description.trim().length === 0)
+    description = "";
+  else
+    description = description.trim();
+
+  duration = Math.max(duration, 0);
+
+  if (dueDate == "")
+  {
+    return;
+  }
+
+// Create new task or modify existing
+  if (modifiedTaskId == 0)
+  {
+    addTask(Date.now().toString(), title, description, subtasks, dueDate, importance, duration, completion, false);
+  } else {
+    let done = taskList[indexOf(modifiedTaskId)].done;
+    addTask(modifiedTaskId, title, description, subtasks, dueDate, importance, duration, completion, done);
+  }
   saveTasks();
   // Updates the Task List element on the page
   updateTaskList();
-  document.getElementById('floating').classList.toggle('hidden');
-});
+  if (taskList.length > 0)
+  {
+    highlightTask(taskList[0].id);
+  } else {
+    highlightTask(0);
+  }
 
-form.addEventListener("reset", function(event) {
-  clearTasks();
   document.getElementById('floating').classList.toggle('hidden');
-});
+}
+
+// highlight incorrect date
+function redDate()
+{
+  let val = document.getElementById('inputDueDateValue').value;
+  console.log(val);
+  if (val == "")
+  {
+      document.getElementById('inputDueDate').classList.add('wrong');
+  }
+  else {
+      document.getElementById('inputDueDate').classList.remove('wrong');
+  }
+}
 
 // The Task List element
 var taskListElement = document.getElementById("taskList");
 
 // Adds Task to taskList based on given paramaters
-function addTask(title, description, subtasksString, dueDateString, importance, duration, completion)
+function addTask(id, title, description, subtasksString, dueDateString, importance, duration, completion, done)
 {
   // Return if errors
   if (dueDateString == "")
@@ -66,11 +156,15 @@ function addTask(title, description, subtasksString, dueDateString, importance, 
   }
 
   // Ensure proper Date format
-  let dueDate = new Date;
-  dueDate.setFullYear(dueDateString.substr(0, 4));
-  dueDate.setMonth(dueDateString.substr(5, 2));
-  dueDate.setDate(dueDateString.substr(8, 2));
-  dueDate.setHours(dueDateString.substr(11, 2), dueDateString.substr(14, 2), 00);
+  let dueDate = new Date();
+  let offset = new Date().getTimezoneOffset() / 60;
+
+  dueDate.setFullYear(parseInt(dueDateString.substr(0, 4)));
+  dueDate.setMonth(parseInt(dueDateString.substr(5, 2))-1);
+  dueDate.setDate(parseInt(dueDateString.substr(8, 2)));
+  dueDate.setHours(parseInt(dueDateString.substr(11, 2)) - offset, parseInt(dueDateString.substr(14, 2)), 0);
+  dueDate.setMilliseconds(0);
+
 
   // Clamp Importance between 0 and 100, and round to nearest integer
   importance = Math.round(Math.max(0,Math.min(100, importance)));
@@ -81,37 +175,81 @@ function addTask(title, description, subtasksString, dueDateString, importance, 
   // Clamp Completion between 0 and 100, and round to nearest integer
   Math.round(Math.max(0,Math.min(100, completion)));
 
-  // Create new Task object, and set the paramaters
-  let task = new Task(
-    Date.now().toString(), // ID
-    title.toString(),
-    description.toString(),
-    subtasks,
-    dueDate,
-    importance,
-    duration,
-    completion);
+  let newTask = true;
 
-  // Pushes new Task to Task List
-  taskList.push(task);
+  for (let i = 0; i < taskList.length; i++)
+  {
+    if (taskList[i].id == id)
+    {
+      newTask = false;
+    }
+  }
+
+  if (newTask)
+  {
+    // Create new Task object, and set the paramaters
+    let task = new Task(
+      id, // ID
+      title.toString(),
+      description.toString(),
+      subtasks,
+      dueDate,
+      importance,
+      duration,
+      completion,
+      done);
+
+    // Pushes new Task to Task List
+    taskList.push(task);
+  }
+  else {
+    let index = indexOf(id);
+
+    taskList[index].title = title.toString();
+    taskList[index].description = description.toString();
+    taskList[index].subtasks = subtasks;
+    taskList[index].dueDate = dueDate;
+    taskList[index].importance = importance;
+    taskList[index].duration = duration;
+    taskList[index].completion = completion;
+    taskList[index].done = done;
+  }
 }
 
 // Delete a Task from Task List at a given index
-function deleteTask(index)
+function deleteTask(id)
 {
+  let index = indexOf(id);
+
   if (index < taskList.length)
     taskList.splice(index, 1);
   saveTasks();
   updateTaskList();
+  if (taskList.length > 0)
+    highlightTask(taskList[Math.min(index, taskList.length - 1)].id);
+  else
+    highlightTask();
+}
+
+function indexOf(id)
+{
+  for (let i = 0; i < taskList.length; i++)
+  {
+    if (taskList[i].id == id)
+    {
+      return i;
+    }
+  }
 }
 
 // Clear entore task list
 function clearTasks()
 {
-  console.log("Cleared task list.");
+  console.log("Cleared task list completely.");
   taskList = new Array();
   saveTasks();
   updateTaskList();
+  highlightTask();
 }
 
 // Save task to localStorage
@@ -126,8 +264,87 @@ function loadTasks()
   return JSON.parse(localStorage.getItem('tasks'));
 }
 
+// Currently highlightedTask
+var highlighted = 0;
+
+// Show highlighted task details on the aside
 function highlightTask(id)
 {
+  highlighted = 0;
+
+  // Reset empty message
+  let found = false;
+  document.getElementById('taskListAside').children[0].style.display = "block";
+  document.getElementById('taskBlockAside').children[0].style.display = "block";
+  document.getElementById('taskListAside').children[1].style.display = "none";
+  document.getElementById('taskBlockAside').children[1].style.display = "none";
+
+  for (let i = 0 ; i < taskList.length; i++)
+  {
+    if (taskList[i].id == id)
+    {
+      found = true;
+      highlighted = id;
+
+      document.getElementById('highlightListTitle').textContent = taskList[i].title;
+      document.getElementById('highlightBlockTitle').textContent = taskList[i].title;
+
+      document.getElementById('highlightListCheckmark').setAttribute("data-id", taskList[i].id);
+      document.getElementById('highlightBlockCheckmark').setAttribute("data-id", taskList[i].id);
+
+      if (taskList[i].done)
+      {
+        document.getElementById('highlightListCheckmark').classList.add('done');
+        document.getElementById('highlightBlockCheckmark').classList.add('done');
+      } else {
+        document.getElementById('highlightListCheckmark').classList.remove('done');
+        document.getElementById('highlightBlockCheckmark').classList.remove('done');
+      }
+      document.getElementById('highlightListDescription').textContent = taskList[i].description;
+      document.getElementById('highlightBlockDescription').textContent = taskList[i].description;
+      if (taskList[i].description.length > 0 && taskList[i].description != " ")
+      {
+        document.getElementById('highlightListDescription').parentElement.style.display = "block";
+        document.getElementById('highlightBlockDescription').parentElement.style.display = "block";
+      } else {
+        document.getElementById('highlightListDescription').parentElement.style.display = "none";
+        document.getElementById('highlightBlockDescription').parentElement.style.display = "none";
+      }
+      if (taskList[i].subtasks.length > 0)
+      {
+        document.getElementById('highlightListSubtasks').parentElement.style.display = "block";
+        document.getElementById('highlightBlockSubtasks').parentElement.style.display = "block";
+      } else {
+        document.getElementById('highlightListSubtasks').parentElement.style.display = "none";
+        document.getElementById('highlightBlockSubtasks').parentElement.style.display = "none";
+      }
+      document.getElementById('highlightListSubtasks').innerHTML = "";
+      document.getElementById('highlightBlockSubtasks').innerHTML = "";
+      for (let j = 0; j < taskList[i].subtasks.length; j++)
+      {
+        let append = "<li onclick='markSubtask(" + j + ")'" + (taskList[i].subtasks[j][1] ? "" : " class='uncomplete'") + "><div class='dot'></div><div class='line'></div><span class='sub'>" + taskList[i].subtasks[j][0] + "</span><span class='tick'>✔</span>" + "</li>";
+        document.getElementById('highlightListSubtasks').innerHTML += append;
+        document.getElementById('highlightBlockSubtasks').innerHTML += append;
+      }
+
+      document.getElementById('highLightListDelete').setAttribute("data-id", taskList[i].id);
+      document.getElementById('highLightBlockDelete').setAttribute("data-id", taskList[i].id);
+    }
+  }
+
+    // Show empty message
+    if ((taskList.length == 0 || id == null) || !found)
+    {
+      highlighted = 0;
+
+      document.getElementById('taskListAside').children[0].style.display = "none";
+      document.getElementById('taskBlockAside').children[0].style.display = "none";
+      document.getElementById('taskListAside').children[1].style.display = "flex";
+      document.getElementById('taskBlockAside').children[1].style.display = "flex";
+
+      return;
+    }
+
   let elements = document.getElementById('taskList').children;
 
   for (let i = 0 ; i < elements.length; i++)
@@ -139,21 +356,6 @@ function highlightTask(id)
     else
     {
       elements[i].classList.remove('highlighted');
-    }
-  }
-
-  for (let i = 0 ; i < taskList.length; i++)
-  {
-    if (taskList[i].id == id)
-    {
-      console.log("Highlighted: " + id);
-      document.getElementById('highlightTitle').textContent = taskList[i].title;
-      document.getElementById('highlightDescription').textContent = taskList[i].description;
-      document.getElementById('highlightSubtasks').innerHTML = "";
-      for (let j = 0; j < taskList[i].subtasks.length; j++)
-      {
-        document.getElementById('highlightSubtasks').innerHTML += "<li onclick='markSubtask(" + j + ")'><div class='dot'></div><div class='line'></div>" + taskList[i].subtasks[j][0] + "<span" + (taskList[i].subtasks[j][1] ? "" : " class='uncomplete'") + ">✔</span>" + "</li>";
-      }
     }
   }
 }
@@ -202,6 +404,35 @@ function updateTaskList()
     }
   }
 
+  // Sort via importance/urgency
+
+  // Sort via date of creation
+  function byDate( a, b ) {
+    if ( a.id < b.id ){
+      return 1;
+    }
+    if ( a.id > b.id ){
+      return -1;
+    }
+    return 0;
+  }
+  taskList.sort(byDate);
+
+  // Sort Completed Tasks to bottom
+  let completed = new Array();
+  for (let i = taskList.length - 1; i >= 0; i--)
+  {
+    if (taskList[i].done)
+    {
+      completed.unshift(taskList[i]);
+      taskList.splice(i, 1);
+    }
+  }
+  for (let i = 0; i < completed.length; i++)
+  {
+    taskList.push(completed[i]);
+  }
+
   // For each Task in Task List, add a new unordered list to the element
   for (let i = 0; i < taskList.length; i++)
   {
@@ -237,22 +468,13 @@ function updateTaskList()
     let remainingMinutes = Math.round(taskList[i].duration / 100 * (100 - taskList[i].completion) % 60);
 
     taskListElement.innerHTML += "\
-    <li data-id=" + taskList[i].id + " onclick='highlightTask(" + taskList[i].id + ")'>\
+    <li class='" + (taskList[i].done ? "done" : "") + "' data-id=" + taskList[i].id + " onclick='highlightTask(" + taskList[i].id + ")'>\
     <div class='title'><h2>" + taskList[i].title + "</h2></div>\
     <div class='rating" + rating + "</div>\
     <div class='span description" + (taskList[i].description.length == 0 ? " hidden" : "") + "'>" + taskList[i].description + "</div>\
     <div class='split remaining'>" + (remainingHours > 0 ? remainingHours + "h " : "") + (remainingHours > 0 && remainingMinutes == 0 ? "" : remainingMinutes + "min") + " remaining</div>\
     <div class='split date'>" + dateString(taskList[i].dueDate) + "</div>\
     </li>";
-  }
-}
-
-// Log each Task in taskList to console
-function printTasks()
-{
-  for (let i = 0; i < taskList.length; i++)
-  {
-   console.log(taskList[i]);
   }
 }
 
@@ -351,4 +573,67 @@ function dateString(date)
 }
 
 updateTaskList();
-highlightTask(taskList[0].id);
+
+highlightTask(taskList.length > 0 ? taskList[0].id : "");
+
+// Click Checkmark to cross off highlighted
+document.getElementById('highlightListCheckmark').addEventListener('click', e => {
+  if (e.target !== e.currentTarget)
+    return;
+  crossOff(document.getElementById('highlightListCheckmark').dataset.id);
+});
+document.getElementById('highlightBlockCheckmark').addEventListener('click', e => {
+  if (e.target !== e.currentTarget)
+    return;
+    crossOff(document.getElementById('highlightBlockCheckmark').dataset.id);
+});
+
+// Set delete button
+document.getElementById('highLightListDelete').addEventListener('click', e => {
+  if (e.target !== e.currentTarget)
+    return;
+  deleteTask(document.getElementById('highLightListDelete').dataset.id);
+});
+// Set delete button
+document.getElementById('highLightBlockDelete').addEventListener('click', e => {
+  if (e.target !== e.currentTarget)
+    return;
+  deleteTask(document.getElementById('highLightBlockDelete').dataset.id);
+});
+
+function titleOf(id)
+{
+  for (let i = 0; i < taskList.length; i++)
+  {
+    if (taskList[i].id == id)
+    {
+      return taskList[i].title;
+    }
+  }
+}
+
+// Cross the task off the list
+function crossOff(id)
+{
+  for (let i = 0 ; i < taskList.length; i++)
+  {
+    if (taskList[i].id == id)
+    {
+      taskList[i].done = !taskList[i].done;
+
+      let elements = document.getElementById('taskList').children;
+      for (let j = 0 ; j < elements.length; j++)
+      {
+        if (elements[j].dataset.id == id)
+        {
+          elements[j].classList.toggle('done');
+        }
+      }
+      saveTasks();
+//      updateTaskList();
+
+      if (highlighted = id)
+        highlightTask(highlighted);
+    }
+  }
+}

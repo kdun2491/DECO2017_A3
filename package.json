@@ -2,12 +2,12 @@
   "name": "studbud",
   "version": "1.0.0",
   "description": "DECO2017 Assessment 3 Application",
-  "main": "server.js",
+  "source": "./public/html/index.html",
   "scripts": {
     "test": "test",
-    "start": "node server.js",
-    "prestart": "parcel build ./public/html/index.html",
-    "dev": "parcel serve ./public/html/index.html"
+    "start": "parcel",
+    "build": "parcel build",
+    "dev": "parcel serve"
   },
   "repository": {
     "type": "git",
@@ -29,9 +29,9 @@
     "sass": "^1.52.1"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.0.0-rc.0",
+    "@parcel/transformer-sass": "^2.6.0",
     "autoprefixer": "^10.4.7",
-    "parcel": "^2.0.0-rc.0",
+    "parcel": "^2.6.0",
     "postcss": "^8.4.14"
   }
 }
