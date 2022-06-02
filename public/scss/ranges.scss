@@ -1,0 +1,152 @@
+//https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+:root {
+  --asideImportanceColor: #FFA800;
+  --asideCompletionColor: #FFA800;
+  --formImportanceColor: #FFA800;
+  --formCompletionColor: #FFA800;
+}
+
+//// Reset
+input[type=range] {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+input[type=range]:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+input[type=range]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+
+
+/////////////////
+// Form Importance
+#inputImportance input[type=range] {
+  &::-webkit-slider-thumb{border: 4px solid var(--formImportanceColor);}
+  &::-moz-range-thumb{border: 4px solid var(--formImportanceColor);}
+  &::-ms-thumb{border: 4px solid var(--formImportanceColor);}
+}
+#inputImportance input[type=range]::-webkit-slider-runnable-track {background: var(--formImportanceColor);}
+#inputImportance input[type=range]::-moz-range-track {background: var(--formImportanceColor);}
+#inputImportance input[type=range]::-ms-track {background: var(--formImportanceColor);}
+// Form Completion
+#inputCompletion input[type=range] {
+  &::-webkit-slider-thumb{border: 4px solid var(--formCompletionColor);}
+  &::-moz-range-thumb{border: 4px solid var(--formCompletionColor);}
+  &::-ms-thumb{border: 4px solid var(--formCompletionColor);}
+}
+#inputCompletion input[type=range]::-webkit-slider-runnable-track {background: var(--formCompletionColor);}
+#inputCompletion input[type=range]::-moz-range-track {background: var(--formCompletionColor);}
+#inputCompletion input[type=range]::-ms-track {background: var(--formCompletionColor);}
+// Aside Importance
+#highlightListImportance input[type=range], #highlightBlockImportance input[type=range] {
+  &::-webkit-slider-thumb{border: 4px solid var(--asideImportanceColor);}
+  &::-moz-range-thumb{border: 4px solid var(--asideImportanceColor);}
+  &::-ms-thumb{border: 4px solid var(--asideImportanceColor);}
+}
+#highlightListImportance input[type=range]::-webkit-slider-runnable-track, #highlightBlockImportance input[type=range]::-webkit-slider-runnable-track {background: var(--asideImportanceColor);}
+#highlightListImportance input[type=range]::-moz-range-track, #highlightBlockImportance input[type=range]::-moz-range-track {background: var(--asideImportanceColor);}
+#highlightListImportance input[type=range]::-ms-track, #highlightBlockImportance input[type=range]::-ms-track {background: var(--asideImportanceColor);}
+// Aside Completion
+#highlightListCompletion input[type=range], #highlightBlockCompletion input[type=range] {
+  &::-webkit-slider-thumb{border: 4px solid var(--asideCompletionColor);}
+  &::-moz-range-thumb{border: 4px solid var(--asideCompletionColor);}
+  &::-ms-thumb{border: 4px solid var(--asideCompletionColor);}
+}
+#highlightListCompletion input[type=range]::-webkit-slider-runnable-track, #highlightBlockCompletion input[type=range]::-webkit-slider-runnable-track {background: var(--asideCompletionColor);}
+#highlightListCompletion input[type=range]::-moz-range-track, #highlightBlockCompletion input[type=range]::-moz-range-track {background: var(--asideCompletionColor);}
+#highlightListCompletion input[type=range]::-ms-track, #highlightBlockCompletion input[type=range]::-ms-track {background: var(--asideCompletionColor);}
+
+
+input[type=range] {
+
+  &::-webkit-slider-thumb
+  {
+    -webkit-appearance: none;
+    margin-top: -10px;
+
+    -webkit-box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+
+    background: #FFFFFF;
+    border: 4px solid #FFA800;
+
+    cursor: pointer;
+  }
+
+  &::-moz-range-thumb
+  {
+    -moz-box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+
+    background: #FFFFFF;
+    border: 4px solid #FFA800;
+
+    cursor: pointer;
+  }
+
+  &::-ms-thumb
+  {
+    box-sizing: border-box;
+    height: 24px;
+    width: 24px;
+    border-radius: 24px;
+
+    background: #FFFFFF;
+    border: 4px solid #FFA800;
+
+    cursor: pointer;
+  }
+}
+
+
+input[type=range]::-webkit-slider-runnable-track {
+  height: 5px;
+  width: 100%;
+  border-radius: 5px;
+
+  background: #FFA800;
+
+  cursor: pointer;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+}
+
+input[type=range]::-moz-range-track {
+  height: 5px;
+  width: 100%;
+  border-radius: 5px;
+
+  background: #FFA800;
+
+  cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+  height: 5px;
+  width: 100%;
+  border-radius: 5px;
+
+  background: #FFA800;
+
+  cursor: pointer;
+}

@@ -196,6 +196,7 @@
   .section
   {
     margin-bottom: 40px;
+    position: relative;
 
     &.title {
       display:flex;
@@ -211,10 +212,83 @@
 
   .module
   {
+    box-sizing:content-box;
+    position: relative;
     min-height:40px;
     border-radius: 20px;
     background-color: #FFFFFF;
+    width:100%;
+    padding: 10px 25px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Inter", Arial, Helvetica, sans-serif;
+    font-size: large;
+    line-height: 150%;
+    font-weight: normal;
     margin: 0px -25px;
+
+    [type=range] {
+      width:100%;
+    }
+  }
+
+  .section.range
+  {
+    span
+    {
+      position: relative;
+      float: right;
+      font-size: xx-large;
+      font-weight: bold;
+      bottom: 5px;
+    }
+  }
+
+  .dateContainer
+  {
+    display: flex;
+    justify-content: space-between;
+
+    .section{
+      position: relative;
+      width: 50%;
+
+      .module
+      {
+        box-sizing: border-box;
+        width: calc(100% + 12px);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow:column;
+
+        span {
+          margin: 0px;
+          padding: 0px;
+        }
+      }
+
+      &:first-child .module
+      {
+        margin: 0px;
+        left: -25px;
+      }
+
+      &:last-child .module
+      {
+        margin: 0px;
+        right:-12px;
+
+      }
+
+      &:last-child h2
+      {
+        margin-left: 37px;
+      }
+    }
   }
 
   #highlightListCheckmark, #highlightBlockCheckmark {
@@ -273,7 +347,7 @@
       .sub
       {
         display: inline-block;
-        width: 80%;
+        max-width:80%;
         height: 100%;
         text-overflow:ellipsis;
         overflow:hidden;

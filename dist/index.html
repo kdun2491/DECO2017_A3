@@ -83,17 +83,29 @@
           <ul id="highlightBlockSubtasks">
           </ul>
         </div>
+        <div class="dateContainer">
+          <div class="section">
+            <h2>Due Date</h2>
+            <div id="highlightBlockDueDate" class="module">hello</div>
+          </div>
+          <div class="section">
+            <h2>Time Left</h2>
+            <div id="highlightBlockDuration" class="module">hiello</div>
+          </div>
+        </div>
         <div class="section">
           <h2>Importance</h2>
-          <div id="highlightBlockImportance" class="module"></div>
+          <span id="importanceIndicatorBlock">!!!</span>
+          <div id="highlightBlockImportance" class="module">
+            <input id="inputImportanceValueAsideBlock" type="range" min="0" max="100" step="1" value="100" oninput="asideImportance(this.value)" onchange="asideImportance(this.value)">
+          </div>
         </div>
         <div class="section">
-          <h2>Due Date</h2>
-          <div id="highlightBlockDueDate" class="module"></div>
-        </div>
-        <div class="section">
-          <h2>Duration</h2>
-          <div id="highlightBlockDuration" class="module"></div>
+          <h2>Completion</h2>
+          <span id="completionIndicatorBlock">100%</span>
+          <div id="highlightBlockCompletion" class="module">
+            <input id="inputCompletionValueAsideBlock" type="range" min="0" max="100" step="1" value="100" oninput="asideCompletion(this.value)" onchange="asideCompletion(this.value)">
+          </div>
         </div>
         <div class="buttonContainer">
           <button id="highLightBlockEdit" type="button">Edit Task</button>
@@ -130,17 +142,29 @@
           <ul id="highlightListSubtasks">
           </ul>
         </div>
-        <div class="section">
+        <div class="dateContainer">
+          <div class="section">
+            <h2>Due Date</h2>
+            <div id="highlightListDueDate" class="module">hello</div>
+          </div>
+          <div class="section">
+            <h2>Time Left</h2>
+            <div id="highlightListDuration" class="module">hiello</div>
+          </div>
+        </div>
+        <div class="section range">
           <h2>Importance</h2>
-          <div id="highlightListImportance" class="module"></div>
+          <span id="importanceIndicatorList">!!!</span>
+          <div id="highlightListImportance" class="module">
+            <input id="inputImportanceValueAsideList" type="range" min="0" max="100" step="1" value="100" oninput="asideImportance(this.value)" onchange="asideImportance(this.value)">
+          </div>
         </div>
-        <div class="section">
-          <h2>Due Date</h2>
-          <div id="highlightListDueDate" class="module"></div>
-        </div>
-        <div class="section">
-          <h2>Duration</h2>
-          <div id="highlightListDuration" class="module"></div>
+        <div class="section range">
+          <h2>Completion</h2>
+          <span id="completionIndicatorList">100%</span>
+          <div id="highlightListCompletion" class="module">
+            <input id="inputCompletionValueAsideList" type="range" min="0" max="100" step="1" value="100" oninput="asideCompletion(this.value)" onchange="asideCompletion(this.value)">
+          </div>
         </div>
         <div class="buttonContainer">
           <button id="highLightListEdit" type="button">Edit Task</button>
@@ -203,6 +227,7 @@
     <button id="modifyTaskButton" type="button">Edit Task</button>
     <button id="addTaskButton" type="button">Add Task +</button>
   </form>
+
 </div>
 
 <script src="/index.dbb0b877.js"></script>

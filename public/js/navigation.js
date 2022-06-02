@@ -42,7 +42,9 @@ document.getElementById('toggle').children[1].addEventListener('click', e => {
 document.getElementById('floating').addEventListener('click', e => {
   if (e.target !== e.currentTarget)
     return;
-  document.getElementById('floating').classList.toggle('hidden');
+  document.getElementById('floating').classList.add('hidden');
+  let asides = document.getElementsByClassName('aside');
+  for (let i = 0; i < asides.length; i++) asides[i].classList.remove('floatingVisible');
 });
 
 // Show add task form
@@ -50,7 +52,8 @@ let addTasks = document.getElementsByClassName('addTasks');
 for (let i = 0; i < addTasks.length; i++)
 {
   addTasks[i].addEventListener('click', e => {
-    document.getElementById('floating').classList.toggle('hidden');
+    document.getElementById('floating').classList.remove('hidden');
+    document.getElementById('newTaskForm').style.display = "flex";
 
     document.getElementById('addTaskButton').style.display = "block";
     document.getElementById('modifyTaskButton').style.display = "none";
@@ -77,7 +80,9 @@ for (let i = 0; i < addTasks.length; i++)
 
 // Show edit task form
 document.getElementById('highLightListEdit').addEventListener('click', e => {
-  document.getElementById('floating').classList.toggle('hidden');
+
+  hideAsideOnNarrow();
+  document.getElementById('floating').classList.remove('hidden');
 
   document.getElementById('addTaskButton').style.display = "none";
   document.getElementById('modifyTaskButton').style.display = "block";

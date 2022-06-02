@@ -23,37 +23,148 @@ var importanceIndicator = document.getElementById('importanceIndicator');
 var completionIndicator = document.getElementById('completionIndicator');
 
 function formImportance(value) {
+      let blend = value / 100 * 4 - Math.floor(value / 100 * 4);
+      blend *= blend;
+      blend *= blend;
+      blend *= blend;
+
+      let r = document.querySelector(':root');
       switch(Math.floor(value / 100 * 4))
       {
         case 0:
           importanceIndicator.textContent = "!";
-          importanceIndicator.style.color = "#FFFFFF00";
+          importanceIndicator.style.color = blendHex("#FFFFFF00", "#75D000FF", blend);
+          r.style.setProperty('--formImportanceColor', blendHex("#C4C4C4FF", "#75D000FF", blend));
           break;
         case 1:
           importanceIndicator.textContent = "!";
-          importanceIndicator.style.color = "#75D000";
+          importanceIndicator.style.color = blendHex("#75D000FF", "#FFB800FF", blend);
+          r.style.setProperty('--formImportanceColor', blendHex("#75D000FF", "#FFB800FF", blend));
           break;
         case 2:
           importanceIndicator.textContent = "!!";
-          importanceIndicator.style.color = "#FFB800";
+          importanceIndicator.style.color = blendHex("#FFB800FF", "#FF0000FF", blend);
+          r.style.setProperty('--formImportanceColor', blendHex("#FFB800FF", "#FF0000FF", blend));
           break;
         case 3:
           importanceIndicator.textContent = "!!!";
-          importanceIndicator.style.color = "#FF0000";
+          importanceIndicator.style.color = blendHex("#FF0000FF", "#DD0000FF", blend);
+          r.style.setProperty('--formImportanceColor', blendHex("#FF0000FF", "#DD0000FF", blend));
           break;
         case 4:
           importanceIndicator.textContent = "!!!";
-          importanceIndicator.style.color = "#FF0000";
+          importanceIndicator.style.color = "#DD0000FF";
+          r.style.setProperty('--formImportanceColor', "#DD0000FF");
           break;
       }
 }
 
 function formCompletion(value) {
-  completionIndicator.textContent = Math.round(value) + "%"
+  if (value < 50)
+  {
+    let r = document.querySelector(':root').style.setProperty('--formCompletionColor', blendHex("#C4C4C4FF", "#FFA800FF", Math.min(1, (value - 1) / 100 * 4) ));
+  } else {
+    let r = document.querySelector(':root').style.setProperty('--formCompletionColor', blendHex("#FFA800FF", "#75D000FF", Math.max(0, Math.min(1, (value - 1) / 100 * 10 - 9))));
+  }
+  completionIndicator.textContent = Math.round(value) + "%";
 }
 
 formImportance(document.getElementById('inputImportanceValue').value);
 formCompletion(document.getElementById('inputCompletionValue').value);
+
+// Range indicators on aside
+var importanceIndicatorList = document.getElementById('importanceIndicatorList');
+var importanceIndicatorBlock = document.getElementById('importanceIndicatorBlock');
+var completionIndicatorList = document.getElementById('completionIndicatorList');
+var completionIndicatorBlock = document.getElementById('completionIndicatorBlock');
+
+function asideImportance(value) {
+  if (taskList.length == 0) return;
+  let r = document.querySelector(':root');
+
+  taskList[indexOf(highlighted)].importance = value;
+  let blend = value / 100 * 4 - Math.floor(value / 100 * 4);
+  blend *= blend;
+  blend *= blend;
+  blend *= blend;
+  switch(Math.floor(value / 100 * 4))
+  {
+    case 0:
+      importanceIndicatorList.textContent = "!";
+      importanceIndicatorList.style.color = blendHex("#FFFFFF00", "#75D000FF", blend);
+      importanceIndicatorBlock.textContent = "!";
+      importanceIndicatorBlock.style.color = blendHex("#FFFFFF00", "#75D000FF", blend);
+      r.style.setProperty('--asideImportanceColor', blendHex("#C4C4C4FF", "#75D000FF", blend));
+      break;
+    case 1:
+      importanceIndicatorList.textContent = "!";
+      importanceIndicatorList.style.color = blendHex("#75D000FF", "#FFB800FF", blend);
+      importanceIndicatorBlock.textContent = "!";
+      importanceIndicatorBlock.style.color = blendHex("#75D000FF", "#FFB800FF", blend);
+      r.style.setProperty('--asideImportanceColor', blendHex("#75D000FF", "#FFB800FF", blend));
+      break;
+    case 2:
+      importanceIndicatorList.textContent = "!!";
+      importanceIndicatorList.style.color = blendHex("#FFB800FF", "#FF0000FF", blend);
+      importanceIndicatorBlock.textContent = "!!";
+      importanceIndicatorBlock.style.color = blendHex("#FFB800FF", "#FF0000FF", blend);
+      r.style.setProperty('--asideImportanceColor', blendHex("#FFB800FF", "#FF0000FF", blend));
+      break;
+    case 3:
+      importanceIndicatorList.textContent = "!!!";
+      importanceIndicatorList.style.color = blendHex("#FF0000FF", "#DD0000FF", blend);
+      importanceIndicatorBlock.textContent = "!!!";
+      importanceIndicatorBlock.style.color = blendHex("#FF0000FF", "#DD0000FF", blend);
+      r.style.setProperty('--asideImportanceColor', blendHex("#FF0000FF", "#DD0000FF", blend));
+      break;
+    case 4:
+      importanceIndicatorList.textContent = "!!!";
+      importanceIndicatorList.style.color = "#FF0000FF";
+      importanceIndicatorBlock.textContent = "!!!";
+      importanceIndicatorBlock.style.color = "#FF0000FF";
+      r.style.setProperty('--asideImportanceColor', "#FF0000FF");
+      break;
+  }
+  saveTasks();
+  updateTaskList();
+}
+
+function asideCompletion(value) {
+  if (taskList.length == 0) return;
+  if (value < 50)
+  {
+    let r = document.querySelector(':root').style.setProperty('--asideCompletionColor', blendHex("#C4C4C4FF", "#FFA800FF", Math.min(1, (value - 1) / 100 * 4) ));
+  } else {
+    let r = document.querySelector(':root').style.setProperty('--asideCompletionColor', blendHex("#FFA800FF", "#75D000FF", Math.max(0, Math.min(1, (value - 1) / 100 * 10 - 9))));
+  }
+  taskList[indexOf(highlighted)].completion = value;
+
+  completionIndicatorList.textContent = Math.round(value) + "%";
+  completionIndicatorBlock.textContent = Math.round(value) + "%";
+  saveTasks();
+  updateTaskList();
+  updateTimeRemaining(indexOf(highlighted));
+  liveCheck(highlighted);
+}
+
+asideImportance(document.getElementById('inputImportanceValue').value);
+asideCompletion(document.getElementById('inputCompletionValue').value);
+
+// https://coderwall.com/p/z8uxzw/javascript-color-blender
+function blendHex (hexA, hexB, blend)
+{
+  rgbA = [parseInt(hexA[1] + hexA[2], 16), parseInt(hexA[3] + hexA[4], 16), parseInt(hexA[5] + hexA[6], 16), parseInt(hexA[7] + hexA[8], 16)];
+  rgbB = [parseInt(hexB[1] + hexB[2], 16), parseInt(hexB[3] + hexB[4], 16), parseInt(hexB[5] + hexB[6], 16), parseInt(hexB[7] + hexB[8], 16)];
+  rgbC = [rgbA[0] + (rgbB[0] - rgbA[0]) * blend, rgbA[1] + (rgbB[1] - rgbA[1]) * blend, rgbA[2] + (rgbB[2] - rgbA[2]) * blend, rgbA[3] + (rgbB[3] - rgbA[3]) * blend]
+  return '#' + intToHex(rgbC[0]) + intToHex(rgbC[1]) + intToHex(rgbC[2]) + intToHex(rgbC[3]);
+}
+function intToHex(num)
+{
+    var hex = Math.round(num).toString(16);
+    if (hex.length == 1)
+        hex = '0' + hex;
+    return hex;
+}
 
 // Form event that adds a new task to the task list, upon clicking the submit button
 var form = document.getElementById("newTaskForm");
@@ -113,14 +224,23 @@ function fillForm(modifiedTaskId)
     highlightTask(0);
   }
 
-  document.getElementById('floating').classList.toggle('hidden');
+  document.getElementById('floating').classList.remove('hidden');
+}
+
+function updateTimeRemaining(i)
+{
+  let remainingMinutes = Math.round(taskList[i].duration / 100 * (100 - taskList[i].completion) % 60);
+  let remainingHours = Math.floor(taskList[i].duration / 100 * (100 - taskList[i].completion) / 60);
+  let totalMinutes = taskList[i].duration % 60;
+  let totalHours = taskList[i].duration / 60;
+  document.getElementById('highlightListDuration').innerHTML = "<span style='font-weight:bold;font-style:normal;'>" + (remainingHours > 0 ? Math.floor(remainingHours) + "h " : "") + (remainingHours > 0 && remainingMinutes == 0 ? "" : Math.floor(remainingMinutes)) + "min</span><span style='color:#0000007D;font-weight:normal;font-style:italic;'>/ " + (Math.floor(totalHours)  > 0 ? Math.floor(totalHours) + "h " : "") + (totalHours > 0 && totalMinutes == 0 ? "" : Math.floor(totalMinutes)) + "min</span>";
+  document.getElementById('highlightBlockDuration').innerHTML = "<span style='font-weight:bold;font-style:normal;'>" + (remainingHours > 0 ? Math.floor(remainingHours) + "h " : "") + (remainingHours > 0 && remainingMinutes == 0 ? "" : Math.floor(remainingMinutes)) + "min</span><span style='color:#0000007D;font-weight:normal;font-style:italic;'>/ " + (Math.floor(totalHours)  > 0 ? Math.floor(totalHours) + "h " : "") + (totalHours > 0 && totalMinutes == 0 ? "" : Math.floor(totalMinutes)) + "min</span>";
 }
 
 // highlight incorrect date
 function redDate()
 {
   let val = document.getElementById('inputDueDateValue').value;
-  console.log(val);
   if (val == "")
   {
       document.getElementById('inputDueDate').classList.add('wrong');
@@ -162,9 +282,8 @@ function addTask(id, title, description, subtasksString, dueDateString, importan
   dueDate.setFullYear(parseInt(dueDateString.substr(0, 4)));
   dueDate.setMonth(parseInt(dueDateString.substr(5, 2))-1);
   dueDate.setDate(parseInt(dueDateString.substr(8, 2)));
-  dueDate.setHours(parseInt(dueDateString.substr(11, 2)) - offset, parseInt(dueDateString.substr(14, 2)), 0);
+  dueDate.setHours(parseInt(dueDateString.substr(11, 2)), parseInt(dueDateString.substr(14, 2)), 0);
   dueDate.setMilliseconds(0);
-
 
   // Clamp Importance between 0 and 100, and round to nearest integer
   importance = Math.round(Math.max(0,Math.min(100, importance)));
@@ -229,6 +348,7 @@ function deleteTask(id)
     highlightTask(taskList[Math.min(index, taskList.length - 1)].id);
   else
     highlightTask();
+  hideAsideOnNarrow();
 }
 
 function indexOf(id)
@@ -271,6 +391,7 @@ var highlighted = 0;
 function highlightTask(id)
 {
   highlighted = 0;
+
 
   // Reset empty message
   let found = false;
@@ -327,8 +448,24 @@ function highlightTask(id)
         document.getElementById('highlightBlockSubtasks').innerHTML += append;
       }
 
+      let ddString = dateString(new Date(taskList[i].dueDate), true);
+      document.getElementById('highlightListDueDate').innerHTML = ddString;
+      document.getElementById('highlightBlockDueDate').innerHTML = ddString;
+
+      updateTimeRemaining(i);
+
+      asideImportance(taskList[i].importance);
+      inputImportanceValueAsideList.value = taskList[i].importance;
+      inputImportanceValueAsideBlock.value = taskList[i].importance;
+      asideCompletion(taskList[i].completion);
+      inputCompletionValueAsideList.value = taskList[i].completion;
+      inputCompletionValueAsideBlock.value = taskList[i].completion;
+
       document.getElementById('highLightListDelete').setAttribute("data-id", taskList[i].id);
       document.getElementById('highLightBlockDelete').setAttribute("data-id", taskList[i].id);
+
+
+
     }
   }
 
@@ -360,6 +497,21 @@ function highlightTask(id)
   }
 }
 
+function liveCheck (id)
+{
+  if (highlighted == id)
+  {
+    if (taskList[indexOf(highlighted)].done)
+    {
+      document.getElementById('highlightListCheckmark').classList.add('done');
+      document.getElementById('highlightBlockCheckmark').classList.add('done');
+    } else {
+      document.getElementById('highlightListCheckmark').classList.remove('done');
+      document.getElementById('highlightBlockCheckmark').classList.remove('done');
+    }
+  }
+}
+
 function markSubtask (subtask)
 {
   let elements = document.getElementById('taskList').children;
@@ -383,6 +535,8 @@ function markSubtask (subtask)
   updateTaskList();
   highlightTask(id);
 }
+
+
 
 // Update the Task List element on the page
 function updateTaskList()
@@ -468,18 +622,18 @@ function updateTaskList()
     let remainingMinutes = Math.round(taskList[i].duration / 100 * (100 - taskList[i].completion) % 60);
 
     taskListElement.innerHTML += "\
-    <li class='" + (taskList[i].done ? "done" : "") + "' data-id=" + taskList[i].id + " onclick='highlightTask(" + taskList[i].id + ")'>\
+    <li class='" + (taskList[i].done ? "done" : "") + "' data-id=" + taskList[i].id + " onclick='clickedHighlight(" + taskList[i].id + ")'>\
     <div class='title'><h2>" + taskList[i].title + "</h2></div>\
     <div class='rating" + rating + "</div>\
     <div class='span description" + (taskList[i].description.length == 0 ? " hidden" : "") + "'>" + taskList[i].description + "</div>\
     <div class='split remaining'>" + (remainingHours > 0 ? remainingHours + "h " : "") + (remainingHours > 0 && remainingMinutes == 0 ? "" : remainingMinutes + "min") + " remaining</div>\
-    <div class='split date'>" + dateString(taskList[i].dueDate) + "</div>\
+    <div class='split date'>" + dateString(taskList[i].dueDate, false) + "</div>\
     </li>";
   }
 }
 
 // Converts date to readable string when adding to element
-function dateString(date)
+function dateString(date, inAside)
 {
   date = new Date(date);
 
@@ -552,22 +706,88 @@ function dateString(date)
       break;
   }
 
-  // str += day.substr(0, 3); // Day
-  // str += " ";
-  str += date.getDate(); // Date
-  str += " ";
-  // str += month; // Month
-  if(date.getFullYear() !=  new Date().getFullYear()) // If not this year
+  if (inAside)
   {
-    str += month.substr(0, 3); // Month
+    // str += day.substr(0, 3); // Day
+    // str += " ";
+    let pm = date.getHours() > 12;
+    let today = false;
+    let late = false;
+    let d = new Date(date);
+    let now = new Date();
+
+    if (d < now) late = true;
+    if (d.setHours(0, 0, 0, 0) == now.setHours(0, 0, 0, 0)) today = true;
+
+    str += "<span style='";
+    if (late)
+    {
+      str += "color:#FF0000;font-weight:bold;font-style:italic;";
+    } else {
+      if (!today)
+      {
+        str += "color:#0000007D;font-weight:normal;font-style:italic;";
+      }
+      else {
+        str += "font-weight:bold;font-style:normal;";
+      }
+    }
+
+    str +="'>";
+    str += (pm ? date.getHours() - 12 : date.getHours());
+    str += ":";
+    if (date.getMinutes() < 10) str += "0";
+    str += date.getMinutes();
+    str += (pm ? "pm" : "am");
+    str += "</span>"
+    str += "<span style='";
+    if (late)
+    {
+      str += "color:#FF0000;font-weight:bold;font-style:italic;";
+    } else {
+      if (today)
+      {
+        str += "color:#0000007D;font-weight:normal;font-style:italic;";
+      }
+      else {
+        str += "font-weight:bold;font-style:normal;";
+      }
+    }
+    str +="'>";
+    str += date.getDate(); // Date
     str += " ";
-    str += date.getFullYear().toString();//.slice(-2); // Year
+    // str += month; // Month
+    if(date.getFullYear() !=  new Date().getFullYear()) // If not this year
+    {
+      str += month.substr(0, 3); // Month
+      str += " ";
+      str += date.getFullYear().toString().slice(-2); // Year
+    }
+    else {
+      str += month; // Month
+    }
+    str += "</span>"
+    // str += ", ";
+    // str += date.getHours() + ":" + (parseInt(date.getMinutes()) >= 10 ? date.getMinutes() : "0" + date.getMinutes());
   }
   else {
-    str += month; // Month
+    // str += day.substr(0, 3); // Day
+    // str += " ";
+    str += date.getDate(); // Date
+    str += " ";
+    // str += month; // Month
+    if(date.getFullYear() !=  new Date().getFullYear()) // If not this year
+    {
+      str += month.substr(0, 3); // Month
+      str += " ";
+      str += date.getFullYear().toString();//.slice(-2); // Year
+    }
+    else {
+      str += month; // Month
+    }
+    // str += ", ";
+    // str += date.getHours() + ":" + (parseInt(date.getMinutes()) >= 10 ? date.getMinutes() : "0" + date.getMinutes());
   }
-  // str += ", ";
-  // str += date.getHours() + ":" + (parseInt(date.getMinutes()) >= 10 ? date.getMinutes() : "0" + date.getMinutes());
 
   return str;
 }
@@ -637,3 +857,33 @@ function crossOff(id)
     }
   }
 }
+
+function clickedHighlight(id)
+{
+  highlightTask(id);
+  showAsideOnNarrow();
+}
+
+function showAsideOnNarrow()
+{
+  if (window.innerWidth < 760)
+  {
+  /// Show Floating aside if small screen
+  let asides = document.getElementsByClassName('aside');
+  for (let i = 0; i < asides.length; i++) asides[i].classList.add('floatingVisible');
+  document.getElementById('floating').classList.remove('hidden');
+  document.getElementById('newTaskForm').style.display = "none";
+}
+}
+
+function hideAsideOnNarrow()
+{
+  let asides = document.getElementsByClassName('aside');
+  for (let i = 0; i < asides.length; i++) asides[i].classList.remove('floatingVisible');
+  document.getElementById('floating').classList.add('hidden');
+  document.getElementById('newTaskForm').style.display = "flex";
+}
+
+
+let asides = document.getElementsByClassName('aside');
+for (let i = 0; i < asides.length; i++) asides[i].classList.remove('floatingVisible');

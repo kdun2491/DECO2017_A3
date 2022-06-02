@@ -24,12 +24,15 @@ document.getElementById("toggle").children[1].addEventListener("click", (e)=>{
 // Toggle floating window off by clicking outside
 document.getElementById("floating").addEventListener("click", (e)=>{
     if (e.target !== e.currentTarget) return;
-    document.getElementById("floating").classList.toggle("hidden");
+    document.getElementById("floating").classList.add("hidden");
+    let asides = document.getElementsByClassName("aside");
+    for(let i3 = 0; i3 < asides.length; i3++)asides[i3].classList.remove("floatingVisible");
 });
 // Show add task form
 let addTasks = document.getElementsByClassName("addTasks");
 for(let i = 0; i < addTasks.length; i++)addTasks[i].addEventListener("click", (e)=>{
-    document.getElementById("floating").classList.toggle("hidden");
+    document.getElementById("floating").classList.remove("hidden");
+    document.getElementById("newTaskForm").style.display = "flex";
     document.getElementById("addTaskButton").style.display = "block";
     document.getElementById("modifyTaskButton").style.display = "none";
     document.getElementById("newTaskForm").reset();
@@ -48,16 +51,17 @@ for(let i = 0; i < addTasks.length; i++)addTasks[i].addEventListener("click", (e
 });
 // Show edit task form
 document.getElementById("highLightListEdit").addEventListener("click", (e)=>{
-    document.getElementById("floating").classList.toggle("hidden");
+    hideAsideOnNarrow();
+    document.getElementById("floating").classList.remove("hidden");
     document.getElementById("addTaskButton").style.display = "none";
     document.getElementById("modifyTaskButton").style.display = "block";
     document.getElementById("newTaskForm").reset();
     let id = document.getElementById("highlightListCheckmark").dataset.id;
     document.getElementById("modifyTaskButton").setAttribute("data-id", id);
     let subtaskString = "";
-    for(let i3 = 0; i3 < taskList[indexOf(id)].subtasks.length; i3++){
-        if (i3 > 0) subtaskString += ", ";
-        subtaskString += taskList[indexOf(id)].subtasks[i3][0];
+    for(let i4 = 0; i4 < taskList[indexOf(id)].subtasks.length; i4++){
+        if (i4 > 0) subtaskString += ", ";
+        subtaskString += taskList[indexOf(id)].subtasks[i4][0];
     }
     document.getElementById("inputTitleValue").setAttribute("value", taskList[indexOf(id)].title);
     document.getElementById("inputDescriptionValue").setAttribute("value", taskList[indexOf(id)].description);
