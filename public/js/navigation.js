@@ -114,3 +114,5 @@ document.getElementById('highLightListEdit').addEventListener('click', e => {
   formImportance(taskList[indexOf(id)].importance);
   formCompletion(taskList[indexOf(id)].completion);
 });
+
+show('timer');

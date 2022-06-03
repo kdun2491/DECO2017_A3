@@ -75,6 +75,11 @@ html, body {
     display:none;
   }
 
+  .showOnNarrow
+{
+  display: none;
+}
+
   /* Layout Grid narrow view  600 */
  @media screen and (max-width: 760px) {
    .container {
@@ -88,9 +93,13 @@ html, body {
      background-color:#FFFFFF;
    }
 
-   .aside
+   #taskListMain.aside, #taskBlockMain.aside
    {
      display: none;
+   }
+     .showOnNarrow
+   {
+     display: block;
    }
 
    .aside.floatingVisible
@@ -128,7 +137,7 @@ html, body {
      background-color: transparent;
    }
 
-  }
+}
 
   /* Layout Grid assignments  */
 .sidebar { grid-area: sidebar; }
