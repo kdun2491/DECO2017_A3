@@ -144,7 +144,7 @@ function asideCompletion(value) {
   saveTasks();
   updateTaskList();
   updateTimeRemaining(indexOf(highlighted));
-  liveCheck(highlighted);
+  partialCrossOff();
 }
 
 asideImportance(document.getElementById('inputImportanceValue').value);
@@ -224,7 +224,7 @@ function fillForm(modifiedTaskId)
     highlightTask(0);
   }
 
-  document.getElementById('floating').classList.remove('hidden');
+  document.getElementById('floating').classList.add('hidden');
 }
 
 function updateTimeRemaining(i)
@@ -333,6 +333,7 @@ function addTask(id, title, description, subtasksString, dueDateString, importan
     taskList[index].completion = completion;
     taskList[index].done = done;
   }
+  hideAsideOnNarrow();
 }
 
 // Delete a Task from Task List at a given index
@@ -391,7 +392,6 @@ var highlighted = 0;
 function highlightTask(id)
 {
   highlighted = 0;
-
 
   // Reset empty message
   let found = false;
@@ -463,24 +463,23 @@ function highlightTask(id)
 
       document.getElementById('highLightListDelete').setAttribute("data-id", taskList[i].id);
       document.getElementById('highLightBlockDelete').setAttribute("data-id", taskList[i].id);
-
-
-
     }
   }
 
-    // Show empty message
-    if ((taskList.length == 0 || id == null) || !found)
-    {
-      highlighted = 0;
+  partialCrossOff();
 
-      document.getElementById('taskListAside').children[0].style.display = "none";
-      document.getElementById('taskBlockAside').children[0].style.display = "none";
-      document.getElementById('taskListAside').children[1].style.display = "flex";
-      document.getElementById('taskBlockAside').children[1].style.display = "flex";
+  // Show empty message
+  if ((taskList.length == 0 || id == null) || !found)
+  {
+    highlighted = 0;
 
-      return;
-    }
+    document.getElementById('taskListAside').children[0].style.display = "none";
+    document.getElementById('taskBlockAside').children[0].style.display = "none";
+    document.getElementById('taskListAside').children[1].style.display = "flex";
+    document.getElementById('taskBlockAside').children[1].style.display = "flex";
+
+    return;
+  }
 
   let elements = document.getElementById('taskList').children;
 
@@ -497,43 +496,25 @@ function highlightTask(id)
   }
 }
 
-function liveCheck (id)
-{
-  if (highlighted == id)
-  {
-    if (taskList[indexOf(highlighted)].done)
-    {
-      document.getElementById('highlightListCheckmark').classList.add('done');
-      document.getElementById('highlightBlockCheckmark').classList.add('done');
-    } else {
-      document.getElementById('highlightListCheckmark').classList.remove('done');
-      document.getElementById('highlightBlockCheckmark').classList.remove('done');
-    }
-  }
-}
-
 function markSubtask (subtask)
 {
   let elements = document.getElementById('taskList').children;
-  let id = 0;
-  for (let i = 0 ; i < elements.length; i++)
+  for (let i = 0; i < taskList.length; i++)
   {
-    if (elements[i].classList.contains('highlighted'))
+    if (highlighted == taskList[i].id)
     {
-      for (let j = 0; j < taskList.length; j++)
-      {
-        if (elements[i].dataset.id == taskList[j].id)
-        {
-          id = taskList[j].id;
-          taskList[j].subtasks[subtask][1] = !taskList[j].subtasks[subtask][1];
-        }
-      }
+      taskList[i].subtasks[subtask][1] = !taskList[i].subtasks[subtask][1];
     }
   }
 
+
+
+
   saveTasks();
   updateTaskList();
-  highlightTask(id);
+  highlightTask(highlighted);
+  partialCrossOff();
+
 }
 
 
@@ -622,7 +603,7 @@ function updateTaskList()
     let remainingMinutes = Math.round(taskList[i].duration / 100 * (100 - taskList[i].completion) % 60);
 
     taskListElement.innerHTML += "\
-    <li class='" + (taskList[i].done ? "done" : "") + "' data-id=" + taskList[i].id + " onclick='clickedHighlight(" + taskList[i].id + ")'>\
+    <li class='" + (taskList[i].done ? "done" : "") + (taskList[i].id == highlighted ? " highlighted" : "") + "' data-id=" + taskList[i].id + " onclick='clickedHighlight(" + taskList[i].id + ")'>\
     <div class='title'><h2>" + taskList[i].title + "</h2></div>\
     <div class='rating" + rating + "</div>\
     <div class='span description" + (taskList[i].description.length == 0 ? " hidden" : "") + "'>" + taskList[i].description + "</div>\
@@ -849,11 +830,47 @@ function crossOff(id)
           elements[j].classList.toggle('done');
         }
       }
-      saveTasks();
-//      updateTaskList();
+    }
+  }
+  saveTasks();
+  updateTaskList();
 
-      if (highlighted = id)
-        highlightTask(highlighted);
+  if (highlighted = id)
+    highlightTask(highlighted);
+}
+
+// Indicate if partially complete (ie not crossed off, but all subtasks or 100%)
+function partialCrossOff()
+{
+  let elements = document.getElementById('taskList').children;
+  for (let i = 0 ; i < elements.length; i++)
+  {
+    let id = elements[i].dataset.id;
+    let subtasksDone = true;
+    if (taskList[indexOf(id)].subtasks.length == 0) subtasksDone = false;
+
+    for (let j = 0; j < taskList[indexOf(id)].subtasks.length; j++)
+    {
+      if (!taskList[indexOf(id)].subtasks[j][1])
+        subtasksDone = false;
+    }
+    let comp = taskList[indexOf(id)].completion;
+
+    if (subtasksDone || comp >= 100)
+    {
+      elements[i].classList.add('partialDone');
+      if (id == highlighted)
+      {
+        document.getElementById('highlightListCheckmark').classList.add('partialDone');
+        document.getElementById('highlightBlockCheckmark').classList.add('partialDone');
+      }
+    } else {
+      elements[i].classList.remove('partialDone');
+      if (id == highlighted)
+      {
+        document.getElementById('highlightListCheckmark').classList.remove('partialDone');
+        document.getElementById('highlightBlockCheckmark').classList.remove('partialDone');
+      }
     }
   }
 }
@@ -876,6 +893,13 @@ function showAsideOnNarrow()
 }
 }
 
+function windowChange() {
+  if (window.innerWidth >= 760)
+    hideAsideOnNarrow();
+}
+
+window.onresize = windowChange;
+
 function hideAsideOnNarrow()
 {
   let asides = document.getElementsByClassName('aside');
@@ -883,7 +907,6 @@ function hideAsideOnNarrow()
   document.getElementById('floating').classList.add('hidden');
   document.getElementById('newTaskForm').style.display = "flex";
 }
-
 
 let asides = document.getElementsByClassName('aside');
 for (let i = 0; i < asides.length; i++) asides[i].classList.remove('floatingVisible');

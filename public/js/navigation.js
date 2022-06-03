@@ -78,6 +78,7 @@ for (let i = 0; i < addTasks.length; i++)
 }
 
 
+
 // Show edit task form
 document.getElementById('highLightListEdit').addEventListener('click', e => {
 

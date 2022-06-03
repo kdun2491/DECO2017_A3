@@ -13,16 +13,97 @@
 
     li
     {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       float: left;
       width: 46px;
       height: 46px;
       margin-top: 9px;
       border-radius: 10px;
 
-      &:hover
+      img
+      {
+        position: absolute;
+        width:25px;
+        display: block;
+      }
+
+      // https://css-tricks.com/snippets/css/css-triangle/
+      .triangle
+      {
+        display: none;
+        position: absolute;
+        left:70px;
+        top:auto;
+
+        width: 0;
+        height: 0;
+        border-top: 11px solid transparent;
+        border-bottom: 10px solid transparent;
+
+        border-right:12px solid #5242B5;
+      }
+
+      span
+      {
+        display: none;
+
+        position: absolute;
+        width: auto;
+        left: 80px;
+        padding: 5px 10px;
+
+        white-space: nowrap;
+
+        color: #FFFFFF;
+        background: #5242B5;
+        border-radius: 5px;
+
+        font-family: "Inter", Arial, Helvetica, sans-serif;
+        font-size: small;
+        font-weight: normal;
+        font-style: normal;
+      }
+
+      @media screen and (max-width: 760px) {
+        .triangle
+        {
+          bottom: 60px;
+          left: auto;
+          top: auto;
+          border-left: 10px solid transparent;
+          border-right: 10px solid transparent;
+          border-bottom: 10px solid transparent;
+
+          border-top:12px solid #5242B5;
+        }
+
+        span
+        {
+          bottom: 80px;
+          left: auto;
+        }
+      }
+
+      &:first-child
+      {
+        img
+        {
+          width:46px;
+        }
+      }
+
+      &:not(:first-child):hover
       {
         background-color: #7164C2;
+        cursor: pointer;
+
+
+        .triangle, span
+        {
+          display: block;
+        }
       }
     }
   }
