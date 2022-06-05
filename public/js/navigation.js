@@ -1,6 +1,16 @@
 
+
 // Hide and Show DOM elements based on what 'page' click in sidebar
 function show(show) {
+
+  // Focus Sidebar Icon
+  let sidebarList = document.getElementById("sidebarList").children;
+  for (let i = 1; i < sidebarList.length; i++)
+  {
+    sidebarList[i].classList.remove("focused");
+    if (sidebarList[i].classList.contains(show))
+      sidebarList[i].classList.add("focused");
+  }
 
   // Grab all page elements that can be shown or hidden, and hide them
   var toHide = document.getElementsByClassName("hideable");
@@ -107,7 +117,7 @@ document.getElementById('highLightListEdit').addEventListener('click', e => {
   {
     floating.children[j].style.display = "none";
   }
-  
+
   document.getElementById('newTaskForm').style.display = "flex";
 
   document.getElementById('addTaskButton').style.display = "none";
@@ -140,4 +150,4 @@ document.getElementById('highLightListEdit').addEventListener('click', e => {
   formCompletion(taskList[indexOf(id)].completion);
 });
 
-show('timer');
+show('taskBlock');

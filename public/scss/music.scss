@@ -1,0 +1,132 @@
+:root {
+  --musicBackground: #89E8C0; // background color for music art
+  --playTransparency: 0;
+}
+#music
+{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: calc(100% + 450px);
+  min-width: 150px;
+  margin-top: 50px;
+
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+
+  div
+  {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  #musicArt
+  {
+
+    div {
+
+      width: 100%;
+      padding-bottom: 100%;
+
+      border-radius: 20px;
+      background-color: var(--musicBackground);
+    }
+
+
+    #musicSymbol
+    {
+      padding-bottom: 0px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span
+      {
+        font-size: 100px;
+      }
+    }
+  }
+
+  #musicControls
+  {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    margin: 20px 0px;
+
+    div
+    {
+      width: auto;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+
+  #musicStation
+  {
+    div
+    {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+
+      left: 12px;
+      top: calc(50% - 12px);
+
+      border-radius: 50%;
+      background-color: var(--musicBackground);
+    }
+
+    select
+    {
+      width: 100%;
+      min-height: 44px;
+
+      appearance: none;
+      background-color: transparent;
+
+      font-size: medium;
+      font-weight: bold;
+      padding: 10px 50px;
+      border-radius: 100px;
+      border: 2px solid #C4C4C4;
+    }
+  }
+}
+
+#musicMain
+{
+  overflow:visible;
+}
+
+.sidebar
+{
+  ul
+  {
+    li:last-child
+    {
+      outline: 2px solid rgba(255,255,255,var(--playTransparency));
+    }
+  }
+}
+
+@media screen and (max-width: 964px)
+{
+  #music {width: calc(200% + 100px);}
+}
+
+@media screen and (max-width: 760px)
+{
+  #music {width: 100%;}
+}

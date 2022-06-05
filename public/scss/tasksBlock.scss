@@ -1,0 +1,56 @@
+:root {
+  --taskSize: 80px;
+}
+
+#taskBlockContainer
+{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 50px;
+
+  border: 1px solid blue;
+
+  .buttonContainer
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    max-width: 300px;
+
+    border: 1px solid yellow;
+
+    button
+    {
+
+    }
+  }
+
+  #taskBlock
+  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-around;
+
+    width: 100%;
+    height: var(--taskBlockHeight);
+
+    border-radius: 20px;
+    border: 15px solid #F6F6F6;
+    background-color: #F6F6F6;
+
+    div
+    {
+      margin: 2px;
+      width: calc(var(--taskSize) - 4px);
+      height: calc(var(--taskSize) - 4px);
+
+      border-radius: 15px;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import {adjustBlockCount} from "./tasksBlock.js";
 // Task object
 class Task {
   constructor(id, title, description, subtasks, dueDate, importance, duration, completion, done)
@@ -151,7 +152,7 @@ asideImportance(document.getElementById('inputImportanceValue').value);
 asideCompletion(document.getElementById('inputCompletionValue').value);
 
 // https://coderwall.com/p/z8uxzw/javascript-color-blender
-function blendHex (hexA, hexB, blend)
+export function blendHex (hexA, hexB, blend)
 {
   rgbA = [parseInt(hexA[1] + hexA[2], 16), parseInt(hexA[3] + hexA[4], 16), parseInt(hexA[5] + hexA[6], 16), parseInt(hexA[7] + hexA[8], 16)];
   rgbB = [parseInt(hexB[1] + hexB[2], 16), parseInt(hexB[3] + hexB[4], 16), parseInt(hexB[5] + hexB[6], 16), parseInt(hexB[7] + hexB[8], 16)];
@@ -303,7 +304,6 @@ function addTask(id, title, description, subtasksString, dueDateString, importan
       newTask = false;
     }
   }
-
   if (newTask)
   {
     // Create new Task object, and set the paramaters
@@ -523,6 +523,7 @@ function markSubtask (subtask)
 function updateTaskList()
 {
   taskList = loadTasks();
+  adjustBlockCount(false);
 
   // Clear existing Task List
   taskListElement.innerHTML = "";

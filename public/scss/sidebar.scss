@@ -94,6 +94,11 @@
         }
       }
 
+      &.focused
+      {
+        background-color: #7164C2AA;
+      }
+
       &:not(:first-child):hover
       {
         background-color: #7164C2;

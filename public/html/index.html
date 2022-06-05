@@ -16,13 +16,13 @@
 
 <!-- SIDEBAR -->
     <div class="sidebar">
-      <ul>
+      <ul id="sidebarList">
         <li><img src="../img/icon_studbud.png"></li>
-        <li onclick="return show('taskList');"><img src="../img/icon_tasks.png"><div class="triangle"></div><span>Task List</span></li>
-        <li onclick="return show('taskBlock');"><img src="../img/icon_covey.png"><div class="triangle"></div><span>Task Block</span></li>
-        <li onclick="return show('dictionary');"><img src="../img/icon_dictionary.png"><div class="triangle"></div><span>Dictionary</span></li>
-        <li onclick="return show('timer');"><img src="../img/icon_timer.png"><div class="triangle"></div><span>Timer</span></li>
-        <li onclick="return show('music');"><img src="../img/icon_music.png"><div class="triangle"></div><span>Music</span></li>
+        <li class="taskList focused" onclick="return show('taskList');"><img src="../img/icon_tasks.png"><div class="triangle"></div><span>Task List</span></li>
+        <li class="taskBlock" onclick="return show('taskBlock');"><img src="../img/icon_covey.png"><div class="triangle"></div><span>Task Block</span></li>
+        <li class="dictionary" onclick="return show('dictionary');"><img src="../img/icon_dictionary.png"><div class="triangle"></div><span>Dictionary</span></li>
+        <li class="timer" onclick="return show('timer');"><img src="../img/icon_timer.png"><div class="triangle"></div><span>Timer</span></li>
+        <li class="music" onclick="return show('music');"><img src="../img/icon_music.png"><div class="triangle"></div><span>Music</span></li>
       </ul>
     </div>
 
@@ -30,7 +30,25 @@
 <!-- MUSIC MAIN CONTENT -->
     <div id="musicMain"  class="main hideable musicShow">
       <div class="innerContainer">
-        Music Main Content
+        <h1>Music Player</h1>
+        <div id="music">
+          <div id="musicArt"><div></div><div id="musicSymbol"><span></span></div></div>
+          <div id="musicControls">
+            <div onclick="moveTrack(-1)">Previous</div>
+            <div id="playPauseMusicButton" onclick="playPauseMusicClick()">Play</div>
+            <div onclick="moveTrack(1)">Next</div>
+          </div>
+          <div id="musicStation">
+            <div></div>
+            <select id="stations" onchange="musicChannelChanged()">
+              <option value="lofi">Lo-fi easy chill</option>
+              <option value="classical">Classical orchestra</option>
+              <option value="acoustic">Acoustic vibes</option>
+              <option value="nature">Nature</option>
+            </select>
+          </div>
+          <audio id="audioPlayer"></audio>
+        </div>
       </div>
     </div>
 
@@ -138,7 +156,24 @@
 <!-- TASKBLOCK MAIN CONTENT -->
     <div id="taskBlockMain"  class="main hideable taskBlockShow">
       <div class="innerContainer">
-        Task Block Main Content
+        <h1>Tasks</h1>
+        <div class="addTasks">+</div>
+        <div id="taskBlockContainer">
+          <div class="buttonContainer">
+            <button>Urgency</button>
+            <button>Importance</button>
+          </div>
+          <div id="taskBlock">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -160,11 +195,11 @@
         <div class="dateContainer">
           <div class="section">
             <h2>Due Date</h2>
-            <div id="highlightBlockDueDate" class="module">hello</div>
+            <div id="highlightBlockDueDate" class="module"></div>
           </div>
           <div class="section">
             <h2>Time Left</h2>
-            <div id="highlightBlockDuration" class="module">hiello</div>
+            <div id="highlightBlockDuration" class="module"></div>
           </div>
         </div>
         <div class="section range">
@@ -219,11 +254,11 @@
         <div class="dateContainer">
           <div class="section">
             <h2>Due Date</h2>
-            <div id="highlightListDueDate" class="module">hello</div>
+            <div id="highlightListDueDate" class="module"></div>
           </div>
           <div class="section">
             <h2>Time Left</h2>
-            <div id="highlightListDuration" class="module">hiello</div>
+            <div id="highlightListDuration" class="module"></div>
           </div>
         </div>
         <div class="section range">
@@ -312,10 +347,12 @@
   </form>
 </div>
 
-<script src="../js/tasks.js"></script>
+<script src="../js/tasks.js" type="module"></script>
 <script src="../js/inputSuffix.js"></script>
 <script src="../js/navigation.js"></script>
 <script src="../js/dictionary.js"></script>
 <script src="../js/timer.js"></script>
+<script src="../js/tasksBlock.js" type="module"></script>
+<script src="../js/music.js"></script>
 </body>
 </html>
