@@ -37,8 +37,39 @@
 <!-- TIMER MAIN CONTENT -->
     <div id="timerMain"  class="main hideable timerShow">
       <div class="innerContainer">
-        Timer Main Content
-        <div id="stopWatchSmall" class="stopWatchContainer showOnNarrow">
+        <h1>Pomodoro Timer</h1>
+        <div class="centerContainer">
+          <div id="eggContainer">
+            <div id="smallHand" class="hand"></div>
+            <div id="bigHand" class="hand"></div>
+            <div id="eggInner">
+              <span id="pomodoroMessage"></span>
+              <span id="pomodoroTime"></span>
+              <div id="eggClock">
+                <div></div>
+                <div></div>
+              </div>
+            </div>
+            <div id="eggOuter">
+              <div id="wedgeContainer">
+              </div>
+            </div>
+
+          </div>
+          <div class="buttonContainer">
+            <button type="button" id="pomodoroSetResetButton" onclick="pomodoroSettings()">Set Timer</button>
+            <button type="button" id="pomodoroPlayPauseButton" onclick="pomodoroPlayPause()">Play Timer</button>
+          </div>
+
+          <div id="stopWatchSmall" class="stopWatchContainer showOnNarrow">
+            <h1>Stopwatch</h1>
+            <span class="stopWatchTimeDisplay"></span>
+            <div class="buttonContainer">
+              <button class="stopWatchLapResetButton" onclick="stopWatchLapResetClick()">Reset</button>
+              <button class="stopWatchStartStopButton" onclick="stopWatchStartStopClick()">Start</button>
+            </div>
+            <ul class="stopWatchLapList"></ul>
+          </div>
         </div>
       </div>
     </div>
@@ -46,8 +77,14 @@
 <!-- TIMER ASIDE -->
     <div id="timerAside"  class="aside shifted hideable timerShow">
       <div class="innerContainer">
-        Timer Aside
+        <h1>Stopwatch</h1>
         <div id="stopWatch" class="stopWatchContainer">
+          <span class="stopWatchTimeDisplay"></span>
+          <div class="buttonContainer">
+            <button class="stopWatchLapResetButton" onclick="stopWatchLapResetClick()">Reset</button>
+            <button class="stopWatchStartStopButton" onclick="stopWatchStartStopClick()">Start</button>
+          </div>
+          <ul class="stopWatchLapList"></ul>
         </div>
       </div>
     </div>
@@ -264,12 +301,21 @@
     <button id="modifyTaskButton" type="button">Edit Task</button>
     <button id="addTaskButton" type="button">Add Task +</button>
   </form>
-
+  <form id="pomodoroForm">
+    <div>
+      <span>Work for<input type="number" name="pomodoroWorkInput" oninput="pomodoroInputsChanged()" onchange="pomodoroInputsChangedHighlight()" value="25">minutes,</span>
+      <span>then break for<input type="number" name="pomodoroBreakInput" oninput="pomodoroInputsChanged()" onchange="pomodoroInputsChangedHighlight()" value="5">minutes,</span>
+      <span>and repeat<input type="number" name="pomodoroRepsInput" oninput="pomodoroInputsChanged()" onchange="pomodoroInputsChangedHighlight()" value="4">times,</span>
+      <span>before a<input type="number" name="pomodoroRestInput" oninput="pomodoroInputsChanged()" onchange="pomodoroInputsChangedHighlight()" value="30">minute break.</span>
+    </div>
+    <button type="submit">Save</button>
+  </form>
 </div>
 
 <script src="../js/tasks.js"></script>
 <script src="../js/inputSuffix.js"></script>
 <script src="../js/navigation.js"></script>
 <script src="../js/dictionary.js"></script>
+<script src="../js/timer.js"></script>
 </body>
 </html>

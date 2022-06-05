@@ -42,9 +42,19 @@ document.getElementById('toggle').children[1].addEventListener('click', e => {
 document.getElementById('floating').addEventListener('click', e => {
   if (e.target !== e.currentTarget)
     return;
-  document.getElementById('floating').classList.add('hidden');
+
+  let floating = document.getElementById('floating');
+
+  floating.classList.add('hidden');
+
   let asides = document.getElementsByClassName('aside');
   for (let i = 0; i < asides.length; i++) asides[i].classList.remove('floatingVisible');
+
+  //hide children
+  for (let j = 0; j < floating.children.length; j++)
+  {
+    floating.children[j].style.display = "none";
+  }
 });
 
 // Show add task form
@@ -53,6 +63,13 @@ for (let i = 0; i < addTasks.length; i++)
 {
   addTasks[i].addEventListener('click', e => {
     document.getElementById('floating').classList.remove('hidden');
+
+    let floating = document.getElementById('floating');
+    for (let j = 0; j < floating.children.length; j++)
+    {
+      floating.children[j].style.display = "none";
+    }
+
     document.getElementById('newTaskForm').style.display = "flex";
 
     document.getElementById('addTaskButton').style.display = "block";
@@ -84,6 +101,14 @@ document.getElementById('highLightListEdit').addEventListener('click', e => {
 
   hideAsideOnNarrow();
   document.getElementById('floating').classList.remove('hidden');
+
+  let floating = document.getElementById('floating');
+  for (let j = 0; j < floating.children.length; j++)
+  {
+    floating.children[j].style.display = "none";
+  }
+  
+  document.getElementById('newTaskForm').style.display = "flex";
 
   document.getElementById('addTaskButton').style.display = "none";
   document.getElementById('modifyTaskButton').style.display = "block";

@@ -1,0 +1,465 @@
+:root {
+  --repDeg: -108deg; // = 360 / (reps + 1) - 180
+  --rotDeg: 72deg; // = 360 / (reps + 1)
+  --gapDeg: 5deg; // = 360 / (reps + 1)
+  --smallHandDeg: 0deg;
+  --bigHandDeg: 0deg;
+  --breakDeg: 0deg;
+}
+
+.innerContainer
+{
+  .centerContainer
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+  }
+}
+
+#eggContainer
+{
+  position: relative;
+  width: calc(252px * 1.2 + 50px);
+  height: calc(360px * 1.15 + 50px);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  overflow:hidden;
+}
+
+#eggOuter
+{
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  left:15px;
+  top:15px;
+
+  width: calc(252px * 1.2);
+  height: calc(360px * 1.15);
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  border: 10px solid black;
+  background-color: black;
+
+  overflow: hidden;
+
+  z-index: 2;
+}
+
+#eggInner // https://css-tricks.com/the-shapes-of-css/
+{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  left:39px;
+  top:42px;
+
+  width: 252px;
+  height: 360px;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+
+  background-color: white;
+  border: 10px solid black;
+
+  z-index: 3;
+
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+
+  #pomodoroMessage
+  {
+    font-size: x-large;
+    font-weight: bold;
+    font-style: italic;
+    margin-top:15px;
+  }
+
+  #pomodoroTime
+  {
+    font-size: xxx-large;
+    font-weight: normal;
+    font-style: normal;
+    margin-top:5px;
+  }
+
+  #eggClock
+  {
+    position:absolute;
+    overflow:hidden;
+
+    bottom: -10px;
+
+    width: 252px;
+    height: 252px;
+    border-radius: 50%;
+
+    background-color: white;
+    border: 10px solid black;
+
+    div:first-child
+    {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 50%;
+      height: 100%;
+
+      background-color: red;
+    }
+
+    div:last-child
+    {
+      position: absolute;
+      left: 50%;
+      top: 0px;
+      width: 50%;
+      height: 100%;
+
+      transform-origin: left center;
+      transform: rotate(var(--breakDeg));
+
+      background-color: white;
+    }
+
+    &.break
+    {
+      background-color: red;
+
+      div
+      {
+        background-color: red;
+      }
+    }
+  }
+}
+
+
+#wedgeContainer
+{
+  position: absolute;
+
+  width: 500px;
+  height: 500px;
+
+  border-radius: 50%;
+
+  border: 1px solid black;
+  background-color: black;
+  overflow: hidden;
+
+  transform-origin: center;
+  transform: rotate(calc(var(--gapDeg) / 2));
+
+  z-index: 1;
+
+  .wedge
+  {
+    position: absolute;
+    left: 50%;
+
+    width: 250px;
+    height: 500px;
+
+    overflow: hidden;
+    mix-blend-mode: screen;
+    background-color: black;
+
+    transform-origin: center left;
+
+    div
+    {
+      &:first-child
+      {
+        position: absolute;
+        left: -100%;
+
+        width: 200%;
+        height: 100%;
+        border-radius: 50%;
+
+        background-color: white;
+      }
+
+      &:last-child
+      {
+        position: absolute;
+        left: -100%;
+
+        width: 100%;
+        height: 100%;
+
+        transform-origin: center right;
+        transform: rotate(calc(var(--repDeg) - var(--gapDeg)));
+
+        outline: 0px solid black;
+        background-color: black;
+      }
+    }
+
+    &.done
+    {
+      div:first-child { background-color: white; }
+      transform: rotate(calc(0 * var(--rotDeg)));
+    }
+
+    &.rest
+    {
+      div:first-child { background-color: red; }
+      transform: rotate(calc(1 * var(--rotDeg)));
+    }
+  }
+}
+
+.hand
+{
+  position:absolute;
+  left: calc(50% - 5px);
+  top: calc(50% - 5px);
+
+  width: 10px;
+
+  border-radius: 10px;
+
+  transform-origin: 5px 5px;
+
+  &#smallHand
+  {
+    margin-top: 55px;
+    height: 140px;
+    z-index: 4;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    background-color: black;
+    transform: rotate(calc(180deg + var(--smallHandDeg)));
+  }
+
+  &#bigHand
+  {
+    width: 25px;
+    height: 400px;
+    z-index: 1;
+    background-color: red;
+    transform: rotate(calc(181.5deg + var(--bigHandDeg)));
+  }
+}
+
+.buttonContainer
+{
+  display: flex;
+  flex-direction: row;
+  flex-wrap:wrap;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  max-width:500px;
+}
+
+#pomodoroPlayPauseButton, #pomodoroSetResetButton
+{
+  float:left;
+  display:inline-block;
+  padding: 10px 15px;
+  border-radius: 10px;
+  border: 0px solid red;
+  background-color: #5242B5;
+  cursor:pointer;
+  font-size: large;
+  font-style: normal;
+  color: #ffffff;
+  margin:10px 25px;
+  border:2px solid transparent;
+  min-width: 200px;
+
+  &:hover
+  {
+    font-style: italic;
+  }
+
+  &#pomodoroPlayPauseButton:hover
+  {
+    background-color: #7164C2;
+  }
+}
+
+#pomodoroSetResetButton
+{
+  border:2px solid #5242B5;
+  background-color: transparent;
+  color:#5242B5;
+}
+
+#floating
+{
+  z-index:5;
+}
+
+#pomodoroForm
+{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  div
+  {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    span
+    {
+      font-family: "Inter", Arial, Helvetica, sans-serif;
+      font-size: x-large;
+      font-weight: 600;
+      font-style: normal;
+
+      margin: 10px;
+
+      input
+      {
+        margin: 0px 15px;
+        width: 50px;
+        text-align:center;
+        padding-left: auto;
+        padding-right: auto;
+      }
+    }
+  }
+}
+
+.stopWatchContainer
+{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap:nowrap;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+
+  h1
+  {
+    align-self: flex-start;
+  }
+
+  span
+  {
+    font-size: xxx-large;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0px;
+  }
+
+  .buttonContainer
+  {
+    button
+    {
+      border-radius: 50%;
+      font-size: medium;
+      text-align: center;
+    }
+  }
+
+  div
+  {
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    button
+    {
+      float:left;
+      display:inline-block;
+
+      width: 75px;
+      height: 75px;
+
+      border-radius: 50%;
+      border:2px solid transparent;
+      background-color: #5242B5;
+
+      color: #ffffff;
+      font-style: normal;
+      font-style: medium;
+
+      cursor:pointer;
+
+      &:hover
+      {
+        font-style: italic;
+      }
+
+      &.stopWatchStartStopButton:hover
+      {
+        background-color: #7164C2;
+      }
+
+      &.stopWatchLapResetButton
+      {
+        border:2px solid #5242B5;
+        background-color: transparent;
+        color:#5242B5;
+      }
+    }
+  }
+
+  ul
+  {
+    margin: 20px 0px;
+
+    width: 100%;
+    li
+    {
+      padding: 15px 10px;
+
+      border-bottom: 1px solid #CCCCCC;
+
+      font-size: x-large;
+      font-weight: bold;
+      text-align: center;
+
+      &:last-child
+      {
+        border-bottom: 0px;
+      }
+
+      &:hover
+      {
+        background-color: #00000006;
+      }
+    }
+  }
+
+  &.showOnNarrow
+  {
+    padding-top: 50px;
+  }
+}
+
+.showOnNarrow
+{
+  display: none;
+}
+
+@media screen and (max-width: 760px) {
+  .showOnNarrow
+  {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    ul
+    {
+        width: 100%;
+    }
+  }
+}
