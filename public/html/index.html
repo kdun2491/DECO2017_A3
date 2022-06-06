@@ -18,11 +18,11 @@
     <div class="sidebar">
       <ul id="sidebarList">
         <li><img src="../img/icon_studbud.png"></li>
-        <li class="taskList focused" onclick="return show('taskList');"><img src="../img/icon_tasks.png"><div class="triangle"></div><span>Task List</span></li>
-        <li class="taskBlock" onclick="return show('taskBlock');"><img src="../img/icon_covey.png"><div class="triangle"></div><span>Task Block</span></li>
-        <li class="dictionary" onclick="return show('dictionary');"><img src="../img/icon_dictionary.png"><div class="triangle"></div><span>Dictionary</span></li>
-        <li class="timer" onclick="return show('timer');"><img src="../img/icon_timer.png"><div class="triangle"></div><span>Timer</span></li>
-        <li class="music" onclick="return show('music');"><img src="../img/icon_music.png"><div class="triangle"></div><span>Music</span></li>
+        <li class="taskList focused" onclick="return show('taskList');"><img src="../img/icon_tasks.png" alt="Task List"><div class="triangle"></div><span>Task List</span></li>
+        <li class="taskBlock" onclick="return show('taskBlock');"><img src="../img/icon_covey.png" alt="Task Grid"><div class="triangle"></div><span>Task Grid</span></li>
+        <li class="dictionary" onclick="return show('dictionary');"><img src="../img/icon_dictionary.png" alt="Dictionary"><div class="triangle"></div><span>Dictionary</span></li>
+        <li class="timer" onclick="return show('timer');"><img src="../img/icon_timer.png" alt="Timers"><div class="triangle"></div><span>Timer</span></li>
+        <li class="music" onclick="return show('music');"><img src="../img/icon_music.png" alt="Music"><div class="triangle"></div><span>Music</span></li>
       </ul>
     </div>
 
@@ -34,9 +34,9 @@
         <div id="music">
           <div id="musicArt"><div></div><div id="musicSymbol"><span></span></div></div>
           <div id="musicControls">
-            <div onclick="moveTrack(-1)">Previous</div>
-            <div id="playPauseMusicButton" onclick="playPauseMusicClick()">Play</div>
-            <div onclick="moveTrack(1)">Next</div>
+            <div onclick="moveTrack(-1)"><img src="../img/icon_previous.png" alt="Previous"></div>
+            <div id="playPauseMusicButton" onclick="playPauseMusicClick()"><img id="imgPlay" src='../img/icon_play.png' alt='Play'><img id="imgPause" style='display:none;' src='../img/icon_pause.png' alt='Pause'></div>
+            <div onclick="moveTrack(1)"><img src="../img/icon_next.png" alt="Next"></div>
           </div>
           <div id="musicStation">
             <div></div>
@@ -159,22 +159,12 @@
         <h1>Tasks</h1>
         <div class="addTasks">+</div>
         <div id="taskBlockContainer">
-          <div class="buttonContainer">
-            <button>Urgency</button>
-            <button>Importance</button>
-          </div>
-          <div id="taskBlock">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          </div>
+          <span class="message">Work on your tasks, starting from the top left, and working down to the bottom right.</span>
+          <div class="arrow"></div>
+          <div id="taskBlock"></div>
         </div>
       </div>
+      <div class="emptyTasks emptyBlock"><p style="font-size:100px;">🤷</p><p>No more tasks to do. Well done!</p></div>
     </div>
 
 <!-- TASKBLOCK ASIDE -->
@@ -347,12 +337,12 @@
   </form>
 </div>
 
-<script src="../js/tasks.js" type="module"></script>
+<script src="../js/tasks.js"></script>
 <script src="../js/inputSuffix.js"></script>
 <script src="../js/navigation.js"></script>
 <script src="../js/dictionary.js"></script>
 <script src="../js/timer.js"></script>
-<script src="../js/tasksBlock.js" type="module"></script>
+<script src="../js/tasksBlock.js"></script>
 <script src="../js/music.js"></script>
 </body>
 </html>

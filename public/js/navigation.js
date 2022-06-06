@@ -108,7 +108,14 @@ for (let i = 0; i < addTasks.length; i++)
 
 // Show edit task form
 document.getElementById('highLightListEdit').addEventListener('click', e => {
+  floatingEditWindow();
+});
+document.getElementById('highLightBlockEdit').addEventListener('click', e => {
+  floatingEditWindow();
+});
 
+function floatingEditWindow ()
+{
   hideAsideOnNarrow();
   document.getElementById('floating').classList.remove('hidden');
 
@@ -148,6 +155,4 @@ document.getElementById('highLightListEdit').addEventListener('click', e => {
   updateSuffix();
   formImportance(taskList[indexOf(id)].importance);
   formCompletion(taskList[indexOf(id)].completion);
-});
-
-show('taskBlock');
+}

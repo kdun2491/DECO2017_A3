@@ -1,4 +1,6 @@
-import {adjustBlockCount} from "./tasksBlock.js";
+// Global event
+var justUpdatedTaskList = false;
+
 // Task object
 class Task {
   constructor(id, title, description, subtasks, dueDate, importance, duration, completion, done)
@@ -152,7 +154,7 @@ asideImportance(document.getElementById('inputImportanceValue').value);
 asideCompletion(document.getElementById('inputCompletionValue').value);
 
 // https://coderwall.com/p/z8uxzw/javascript-color-blender
-export function blendHex (hexA, hexB, blend)
+function blendHex (hexA, hexB, blend)
 {
   rgbA = [parseInt(hexA[1] + hexA[2], 16), parseInt(hexA[3] + hexA[4], 16), parseInt(hexA[5] + hexA[6], 16), parseInt(hexA[7] + hexA[8], 16)];
   rgbB = [parseInt(hexB[1] + hexB[2], 16), parseInt(hexB[3] + hexB[4], 16), parseInt(hexB[5] + hexB[6], 16), parseInt(hexB[7] + hexB[8], 16)];
@@ -523,7 +525,7 @@ function markSubtask (subtask)
 function updateTaskList()
 {
   taskList = loadTasks();
-  adjustBlockCount(false);
+  justUpdatedTaskList = true;
 
   // Clear existing Task List
   taskListElement.innerHTML = "";
@@ -535,8 +537,10 @@ function updateTaskList()
     if (taskList.length > 0)
     {
       displays[i].style.display = "none";
+      document.getElementById("taskBlockContainer").style.display = "flex";
     } else {
       displays[i].style.display = "block";
+      document.getElementById("taskBlockContainer").style.display = "none";
     }
   }
 

@@ -1,4 +1,10 @@
-import {blendHex} from "./tasks.js";
+// Get updated trigger event from tasks.js
+window.setInterval(function(){
+  if (justUpdatedTaskList){
+    adjustBlockCount(false);
+    justUpdatedTaskList = false;
+  }
+}, 5);
 
 var taskBlock = document.getElementById('taskBlock');
 var taskSize = 80;
@@ -45,6 +51,13 @@ function rankTasks()
   let leastImportant = 0;
   for (let i = 0; i < taskAspects.length; i++) //Math.min(mostUrgent, taskAspects[i].task)
   {
+    // Sent to bottom if done
+    if (taskAspects[i].task.done)
+    {
+      taskAspects[i].urgency = Date.now() * 2;
+      taskAspects[i].importance = 0;
+    }
+
     if (i > 0)
     {
       // Check Most Urgent
@@ -66,23 +79,24 @@ function rankTasks()
       {
         mostImportant = i;
       } else if (taskAspects[mostImportant].importance == taskAspects[i].importance) {
-        if (taskAspects[i].urgency < taskAspects[mostImportant].urgency) mostImportant = i;
+        if (taskAspects[i].task.id < taskAspects[mostImportant].task.id) mostImportant = i;
       }
       // Check Least Important
       if (taskAspects[i].importance < taskAspects[leastImportant].importance)
       {
         leastImportant = i;
       } else if (taskAspects[leastImportant].importance == taskAspects[i].importance) {
-        if (taskAspects[i].urgency > taskAspects[leastImportant].urgency) leastImportant = i;
+        if (taskAspects[i].task.id > taskAspects[leastImportant].task.id) leastImportant = i;
       }
     }
+
   }
 
   // Get Global Rank 1 = most, 0 = least
   for (let i = 0; i < taskAspects.length; i++)
   {
-    taskAspects[i].globalUrgency = (taskAspects[i].urgency - taskAspects[leastUrgent].urgency) / (taskAspects[mostUrgent].urgency - taskAspects[leastUrgent].urgency);
-    taskAspects[i].globalImportance = (taskAspects[i].importance - taskAspects[leastImportant].importance) / (taskAspects[mostImportant].importance - taskAspects[leastImportant].importance);
+    taskAspects[i].globalUrgency = (taskAspects[i].urgency - taskAspects[leastUrgent].urgency) / (taskAspects[mostUrgent].urgency == taskAspects[leastUrgent].urgency ? 1 : taskAspects[mostUrgent].urgency - taskAspects[leastUrgent].urgency);
+    taskAspects[i].globalImportance = (taskAspects[i].importance - taskAspects[leastImportant].importance) / (taskAspects[mostImportant].importance == taskAspects[leastImportant].importance ? 1 : taskAspects[mostImportant].importance - taskAspects[leastImportant].importance);
   }
 }
 
@@ -99,43 +113,96 @@ function distributeTasks(x, y)
   {
     distributedArray[i] = new Array(y);
   }
+  // sort taskAspects by id so earliest created first
+  //taskAspects.sort((a, b) => (a.task.id > b.task.id) ? 1 : -1 );
+
 
   for (let i = 0; i < taskAspects.length; i++)
   {
-    let toX = Math.floor((1 - taskAspects[i].globalUrgency) * (x - 1));
-    let toY = Math.floor((1 - taskAspects[i].globalImportance) * (y - 1));
-    if (distributedArray[toX][toY] == null)
-      distributedArray[toX][toY] = taskAspects[i].task;
+    let urgency = taskAspects[i].globalUrgency;
+    let importance = taskAspects[i].globalImportance;
+    // Place in closest available square
+    let closeness = cellsByCloseness((1 - urgency) * x, (1 - importance) * y, x, y);
 
-/*
-    if (distributedArray[toX][toY] == null)
+    let j = 0;
+    while(distributedArray[  closeness[j][0]  ][  closeness[j][1]  ] != null)
     {
-      distributedArray[toX][toY] = taskAspects[i].task;
-    } else if (distributedArray[toX + 1][toY] == null)
-    {
-      distributedArray[toX + 1][toY] = taskAspects[i].task;
-    } else if (distributedArray[toX][toY + 1] == null)
-    {
-      distributedArray[toX][toY + 1] = taskAspects[i].task;
-    } else if (distributedArray[toX + 1][toY + 1] == null)
-    {
-      distributedArray[toX + 1][toY + 1] = taskAspects[i].task;
-    } else {
-      Console.log("Clash");
+      j++;
     }
-*/
-
+    distributedArray[  closeness[j][0]  ][  closeness[j][1]  ] = taskAspects[i].task;
   }
+
+  //shift Left
+  let emptyColumn = true;
+  let emptyColumnCount = 0;
+  for (let j = 0; j < x; j++)
+  {
+    for (let k = 0; k < y; k++)
+    {
+      if (distributedArray[j][k] != null) emptyColumn = false;
+    }
+    if (emptyColumn)
+    {
+      emptyColumnCount++;
+    }
+  }
+  for (let l = 0; l < emptyColumnCount; l++)
+    distributedArray.push(distributedArray.shift());
+
+  //shift up
+  let emptyRow = true;
+  let emptyRowCount = 0;
+  for (let k = 0; k < y; k++)
+  {
+    for (let j = 0; j < x; j++)
+    {
+      if (distributedArray[j][k] != null) emptyRow = false;
+    }
+    if (emptyRow)
+    {
+      emptyRowCount++;
+    }
+  }
+  for (let j = 0; j < x; j++)
+  {
+    for (let k = 0; k < emptyRowCount; k++)
+    {
+      distributedArray[j].push(distributedArray[j].shift());
+    }
+  }
+
 
   return distributedArray;
 }
 
 
 
+function cellsByCloseness(x, y, xSize, ySize)
+{
+  // Set array of length cells, with each coordinate, distance to (x,y)
+  let arr = new Array (xSize * ySize);
+  let a = 0;
+  let b = 0;
+  for (let i = 0; i < arr.length; i++)
+  {
+    arr[i] = new Array(a, b, Math.sqrt(Math.pow(x - a, 2) + Math.pow(y - b, 2)));
+
+    a++;
+    if (a == xSize)
+    {
+      a = 0;
+      b++;
+    }
+  }
+
+  // Sort arr by distance [2]
+  //https://flaviocopes.com/how-to-sort-array-of-objects-by-property-javascript/
+  arr.sort((a, b) => (a[2] > b[2]) ? 1 : (a[2] === b[2]) ? ((a[1] > b[1]) ? 1 : -1) : -1 );
+  return arr;
+}
 
 
-
-export function adjustBlockCount(resized)
+function adjustBlockCount(resized)
 {
   if (!resized)
     rankTasks();
@@ -146,12 +213,12 @@ export function adjustBlockCount(resized)
   // Add a "comfortable" amount of tasks onto the block
   let upperTaskCount = Math.max(Math.ceil(taskCount / Math.floor(width / taskSize)) * Math.floor(width / taskSize), Math.max(Math.floor(window.innerHeight / taskSize) - 2, 1) * Math.floor(width / taskSize));
 
-  document.querySelector(':root').style.setProperty('--taskSize', Math.floor(width / Math.floor(width / taskSize)) + "px");
+  document.querySelector(':root').style.setProperty('--taskSize', Math.floor(width / Math.floor(width / taskSize)) - 1 + "px");
 
   taskBlock.innerHTML = "";
 
   let xSize = Math.floor(width / taskSize);
-  let ySize = upperTaskCount / xSize;
+  let ySize = Math.floor(upperTaskCount / xSize);
 
   let grid = distributeTasks(xSize, ySize);
 
@@ -171,9 +238,18 @@ export function adjustBlockCount(resized)
       let colorBG = blendHex(colorB, colorG, corner);
       let colorYG = blendHex(colorY, colorG, corner);
       let colorBY = blendHex(colorBG, colorYG, half);
-      let color = blendHex("#F6F6F600", colorBY, (task != null ? 1 : 0.5));
+      let color = blendHex("#F6F6F600", colorBY, (task != null ? (!task.done ? 1 : 0.5) : 0.5));
 
-      taskBlock.innerHTML += "<div style='background-color:" + color + ";'>(" + x + "," + y + ")<br>" + (task != null ? task.title : "") + "</div>"
+      taskBlock.innerHTML += "\
+      <div style='"
+      + "background-color: " + color + ";"
+      + (task != null ? "cursor: pointer;": "")
+      + (task != null ? (task.done ? "border: 4px solid #75D000;" : "") : "")
+      + (task != null ? (task.id == highlighted ? "border: 4px solid #5242B5CC;" : "") : "")
+      + "'"
+      + (task != null ? "onclick='highlightTask(" + task.id + ")'>" : "")
+      + "<span>" + (task != null ? task.title : "") + "</span>\
+      </div>"
     }
   }
 

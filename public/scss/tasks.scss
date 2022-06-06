@@ -473,6 +473,11 @@
   width: 100%;
   text-align: center;
 
+  &.emptyBlock
+  {
+    margin-top: 50px;
+  }
+
   p {
     margin: 20px;
   }

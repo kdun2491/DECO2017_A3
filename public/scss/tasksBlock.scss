@@ -8,10 +8,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   margin-top: 50px;
-
-  border: 1px solid blue;
 
   .buttonContainer
   {
@@ -27,6 +26,28 @@
     {
 
     }
+  }
+
+  span.message
+  {
+    font-size: small;
+    font-style: italic;
+    text-align: justify;
+    margin-bottom: 15px;
+  }
+
+  div.arrow
+  {
+    position: absolute;
+    top: 12px;
+    left: -30px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+
+    border-left: 18px solid #C4C4C4;
+    transform: rotate(45deg);
   }
 
   #taskBlock
@@ -49,8 +70,25 @@
       margin: 2px;
       width: calc(var(--taskSize) - 4px);
       height: calc(var(--taskSize) - 4px);
+      box-sizing: border-box;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       border-radius: 15px;
+
+      span
+      {
+        text-align:center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        padding: 4px;
+      }
+
+      &:hover
+      {font-style:italic;}
     }
   }
 }

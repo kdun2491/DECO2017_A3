@@ -80,7 +80,8 @@ function playPauseMusicClick()
 // play music
 function playMusic(channel, index)
 {
-  playPauseMusicButton.textContent = "Pause";
+  document.getElementById("imgPause").style.display = "block";
+  document.getElementById("imgPlay").style.display = "none";
 
   playing = true;
   playIndicatorTime = 0;
@@ -124,7 +125,8 @@ function playMusic(channel, index)
 function pauseMusic()
 {
   playing = false;
-  playPauseMusicButton.textContent = "Play";
+  document.getElementById("imgPause").style.display = "none";
+  document.getElementById("imgPlay").style.display = "block";
 
   document.getElementById("audioPlayer").pause();
 
