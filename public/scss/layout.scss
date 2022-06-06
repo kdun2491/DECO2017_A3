@@ -157,7 +157,7 @@ html, body {
   overflow:hidden;
   overflow-y:scroll;
 }
-
+/*
 body, .container, .main, .aside {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -166,7 +166,15 @@ body, .container, .main, .aside {
 body::-webkit-scrollbar, .container::-webkit-scrollbar, .main::-webkit-scrollbar, .aside::-webkit-scrollbar {
   display: none;
 }
+*/
+body, .container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
+body::-webkit-scrollbar, .container::-webkit-scrollbar {
+  display: none;
+}
 #floating
 {
   position: fixed;
